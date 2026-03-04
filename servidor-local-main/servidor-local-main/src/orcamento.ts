@@ -87,7 +87,7 @@ export function selecionarPrestador(nome: string) {
 }
 
 //funcao para editar prestador de servico
-export function editarPrestadorDeServico(nomePrestador: string, novosDadosPrestador: PrestadorType) {
+export function editarPrestadorDeServico(nomePrestador: string, novosDadosPrestador: PrestadorType): ResponseType {
     prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
         if(prestadorExistente.nome === nomePrestador){
             prestadorExistente.nome = novosDadosPrestador.nome
@@ -97,5 +97,17 @@ export function editarPrestadorDeServico(nomePrestador: string, novosDadosPresta
             prestadorExistente.percentagemDesconto = novosDadosPrestador.percentagemDesconto
             prestadorExistente.taxaUrgencia = novosDadosPrestador.taxaUrgencia
         }
+
+        return {
+            status: true,
+            message: "prestador de servico editado com sucesso",
+            data: prestadorExistente
+        }
     })
+
+    return {
+        status: false,
+        message: `Prestador com nome ${nomePrestador}  não existe`,
+        data: null
+    }
 }
