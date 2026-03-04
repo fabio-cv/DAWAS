@@ -1,0 +1,101 @@
+import { catalogoServicos } from "./servico.js"
+import { type PedidoServicoType, type PrestadorType, type ServicoType, type ResponseType } from "./utils/types.js"
+
+
+const taxaUrgencia: number = 0.3
+const minimoParaDesconto: number = 100
+const percentagemDesconto: number = 0.1
+
+const servicosSelecionados: ServicoType[] = []
+const prestadoresDeServico: PrestadorType[] = []
+const prestadoresSelecionados: PrestadorType[] = []
+
+// funcao para selecionar servicos e horasEstimadas
+export function selecionarServicos(nome: string) {
+    for (let i = 0; i < catalogoServicos.length; i++) {
+        if (catalogoServicos[i]?.nome === nome) {
+            servicosSelecionados.push(catalogoServicos[i]!)
+            return true
+        }
+    }
+    return false
+}
+
+// fucnao para criar prestadores de servico
+export function criarPrestadoresDeServico(novoPrestador: PrestadorType) {
+    // verificar se o prestador ja esta no array
+    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === novoPrestador.nome) {
+            // se o prestador ja existir, retorna uma mensagem de erro
+            return {
+                status: false,
+                message: "Ja existe um prestador de servico com esse nome",
+                data: null
+            }
+        }
+    })
+
+    // se o prestador nao existir, adicionamos o novo prestador
+    prestadoresDeServico.push(novoPrestador)
+    return {
+        status: true,
+        message: "Prestador de servico adicionado com sucesso",
+        data: novoPrestador
+    }
+}
+
+// funcao para calcular o orcamento
+export function calcularOrcamento(pedido: PedidoServicoType) {
+    let totalBruto: number = 0
+    let totalFinal: number = 0
+
+    servicosSelecionados.map((servico: ServicoType) => {
+        let totalDoServico: number = servico.precoHora * pedido.horasEstimadas
+        totalBruto = totalBruto + totalDoServico
+    })
+
+    totalFinal = totalBruto
+
+    if (pedido.urgente) {
+        totalFinal = totalBruto + (totalBruto * taxaUrgencia)
+    }
+
+    if (totalBruto >= minimoParaDesconto) {
+        totalFinal = totalFinal - (totalBruto * percentagemDesconto)
+    }
+
+    return totalFinal
+}
+
+
+//funcao para selecionar prestador pelo nome
+export function selecionarPrestador(nome: string) {
+    let prestadorExiste = false
+    for (let i = 0; i < prestadoresDeServico.length; i++) {
+        if (prestadoresDeServico[i]?.nome === nome) {
+            prestadoresSelecionados.push(prestadoresDeServico[i]!)
+            prestadorExiste = true
+            break
+        }
+    }
+
+    if (prestadorExiste) {
+        return "O prestador foi selecionado"
+    } else {
+        return "o prestador não existe"
+    }
+}
+
+//funcao para editar prestador de servico
+export function editarPrestadorDeServico(nomePrestador: string, novosDadosPrestador: PrestadorType) {
+    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
+        if(prestadorExistente.nome === nomePrestador){
+            prestadorExistente.nome = novosDadosPrestador.nome
+            prestadorExistente.precoHora = novosDadosPrestador.precoHora
+            prestadorExistente.profissao = novosDadosPrestador.profissao
+            prestadorExistente.minimoParaDesconto = novosDadosPrestador.minimoParaDesconto
+            prestadorExistente.percentagemDesconto = novosDadosPrestador.percentagemDesconto
+            prestadorExistente.taxaUrgencia = novosDadosPrestador.taxaUrgencia
+        }
+    })
+}
