@@ -87,29 +87,35 @@ export function selecionarPrestador(nome: string) {
 }
 
 //funcao para editar prestador de servico
-export function editarPrestadorDeServico(nomePrestador: string, novosDadosPrestador: PrestadorType): ResponseType {
-    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
-        if (prestadorExistente?.nome === nomePrestador) {
-            prestadorExistente.nome = novosDadosPrestador.nome
-            prestadorExistente.precoHora = novosDadosPrestador.precoHora
-            prestadorExistente.profissao = novosDadosPrestador.profissao
-            prestadorExistente.minimoParaDesconto = novosDadosPrestador.minimoParaDesconto
-            prestadorExistente.percentagemDesconto = novosDadosPrestador.percentagemDesconto
-            prestadorExistente.taxaUrgencia = novosDadosPrestador.taxaUrgencia
-        }
+export function editarPrestadorDeServico(
+    nomePrestador: string,
+    novosDadosPrestador: PrestadorType
+): ResponseType {
 
+    const prestadorExistente = prestadoresDeServico.find(
+        (prestador: PrestadorType) => prestador.nome === nomePrestador
+    );
+
+    if (!prestadorExistente) {
         return {
-            status: true,
-            message: "prestador de servico editado com sucesso",
-            data: prestadorExistente
-        }
-    })
+            status: false,
+            message: `Prestador com nome ${nomePrestador} não existe`,
+            data: null
+        };
+    }
+
+    prestadorExistente.nome = novosDadosPrestador.nome;
+    prestadorExistente.precoHora = novosDadosPrestador.precoHora;
+    prestadorExistente.profissao = novosDadosPrestador.profissao;
+    prestadorExistente.minimoParaDesconto = novosDadosPrestador.minimoParaDesconto;
+    prestadorExistente.percentagemDesconto = novosDadosPrestador.percentagemDesconto;
+    prestadorExistente.taxaUrgencia = novosDadosPrestador.taxaUrgencia;
 
     return {
-        status: false,
-        message: `Prestador com nome ${nomePrestador}  não existe`,
-        data: null
-    }
+        status: true,
+        message: "Prestador de serviço editado com sucesso",
+        data: prestadorExistente
+    };
 }
 
 //funcao para apagar um prestador de servico
