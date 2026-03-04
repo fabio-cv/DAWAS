@@ -9,7 +9,7 @@ export interface PedidoServicoType {
 export interface ResponseType {
     status: boolean,
     message: string,
-    data: ServicoType | null,
+    data: ServicoType| PrestadorType | null,
 }
 
 export interface ServicoType {

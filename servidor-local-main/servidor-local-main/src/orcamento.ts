@@ -7,7 +7,7 @@ const minimoParaDesconto: number = 100
 const percentagemDesconto: number = 0.1
 
 const servicosSelecionados: ServicoType[] = []
-const prestadoresDeServico: PrestadorType[] = []
+let prestadoresDeServico: PrestadorType[] = []
 const prestadoresSelecionados: PrestadorType[] = []
 
 // funcao para selecionar servicos e horasEstimadas
@@ -89,7 +89,7 @@ export function selecionarPrestador(nome: string) {
 //funcao para editar prestador de servico
 export function editarPrestadorDeServico(nomePrestador: string, novosDadosPrestador: PrestadorType): ResponseType {
     prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
-        if(prestadorExistente.nome === nomePrestador){
+        if (prestadorExistente?.nome === nomePrestador) {
             prestadorExistente.nome = novosDadosPrestador.nome
             prestadorExistente.precoHora = novosDadosPrestador.precoHora
             prestadorExistente.profissao = novosDadosPrestador.profissao
@@ -110,4 +110,51 @@ export function editarPrestadorDeServico(nomePrestador: string, novosDadosPresta
         message: `Prestador com nome ${nomePrestador}  não existe`,
         data: null
     }
+}
+
+//funcao para apagar um prestador de servico
+export function apagarPrestador(nomePrestador: string): ResponseType {
+
+    let newArray: PrestadorType[] = []
+    let prestadorExiste = false
+    let prestador: PrestadorType | null = null
+
+    if (nomePrestador === "") {
+        return {
+            status: false,
+            message: `Nome não pode ser vazio`,
+            data: null
+        }
+    }
+
+    for (let i = 0; i < prestadoresDeServico.length; i++) {
+        if (prestadoresDeServico[i]?.nome !== nomePrestador) {
+            newArray.push(prestadoresDeServico[i]!)
+        } else {
+            prestadorExiste = true
+            prestador = prestadoresDeServico[i]!
+        }
+    }
+
+    // prestadoresDeServico = prestadoresDeServico.filter(
+    //     (prestadorExistente: PrestadorType) => {
+    //         return prestadorExistente.nome !== nomePrestador
+    //     })
+
+    if (prestadorExiste) {
+        prestadoresDeServico = newArray
+
+        return {
+            status: true,
+            message: "prestador de servico apagado com sucesso",
+            data: prestador
+        }
+    }
+
+    return {
+        status: false,
+        message: `Prestador com nome ${nomePrestador}  não existe`,
+        data: null
+    }
+
 }
