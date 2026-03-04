@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
-import { calcularOrcamento, criarPrestadoresDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
+import { calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
 
 const app = express()
 app.use(express.json())
@@ -98,6 +98,14 @@ app.post("/selecionar-prestador", (req: Request, res: Response) => {
     })
   }
 
+})
+
+//rota para editar prestador
+app.put("/editar-prestador", (req: Request, res: Response) => {
+    const {nomeDoPrestador, novosDadosDoPrestador} = req.body
+
+    const editarPrestadorResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
+    res.json(editarPrestadorResponse)
 })
 
 app.listen(8080, () => {
