@@ -1,7 +1,9 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
 import { calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
-import { getUserById, getUsers } from "./users.js"
+import { createUser, getUserById, getUsers } from "./users.js"
+import { error } from "node:console"
+import type { UserType } from "./utils/types.js"
 
 const app = express()
 app.use(express.json())
@@ -9,6 +11,7 @@ app.use(express.json())
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!")
 })
+
 
 // rota para adicionar um serviço novo
 app.post("/adicionar-servico", (req: Request, res: Response) => {
@@ -19,12 +22,14 @@ app.post("/adicionar-servico", (req: Request, res: Response) => {
   res.json(addServicoResponse)
 })
 
+
 // rota para listar todos os servicos
 app.get("/listar-servicos", (req: Request, res: Response) => {
   const listServicoResponse = listarServicos()
 
   res.json(listServicoResponse)
 })
+
 
 // rota para apagar um servico
 app.delete("/apagar-servico", (req: Request, res: Response) => {
@@ -41,6 +46,7 @@ app.delete("/apagar-servico", (req: Request, res: Response) => {
   }
 })
 
+
 // rota para obter servico pelo nome 
 app.get("/obter-servico", (req: Request, res: Response) => {
   const { nome } = req.query
@@ -56,6 +62,7 @@ app.get("/obter-servico", (req: Request, res: Response) => {
   }
 })
 
+
 // rota para selecionar servicos
 app.post("/selecionar-servico", (req: Request, res: Response) => {
   const { nome } = req.body
@@ -64,6 +71,7 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
 
   res.json(selecinarServicoResponse)
 })
+
 
 // rota para calcular orcamento
 app.post("/calcular-orcamento", (req: Request, res: Response) => {
@@ -77,6 +85,7 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
   })
 })
 
+
 //rota para criar prestador
 app.post("/criar-prestador", (req: Request, res: Response) => {
   const novoPrestador = req.body
@@ -85,6 +94,7 @@ app.post("/criar-prestador", (req: Request, res: Response) => {
 
   res.json(novoPrestadorResponse)
 })
+
 
 //rota para selecionar prestadores
 app.post("/selecionar-prestador", (req: Request, res: Response) => {
@@ -101,6 +111,7 @@ app.post("/selecionar-prestador", (req: Request, res: Response) => {
 
 })
 
+
 //rota para editar prestador
 app.put("/editar-prestador", (req: Request, res: Response) => {
   const { nomeDoPrestador, novosDadosDoPrestador } = req.body
@@ -113,6 +124,7 @@ app.listen(8080, () => {
   console.log("Server running on port 8080")
 })
 
+
 //selecionar todos os utilizadores na base de dados 
 app.get("/get-users", async (req: Request, res: Response) => {
   const getUsersResponse = await getUsers()
@@ -120,17 +132,53 @@ app.get("/get-users", async (req: Request, res: Response) => {
   res.json(getUsersResponse)
 })
 
-//selecionar utilizador pelo id
 
+//selecionar utilizador pelo id
 app.get("/get-user-by-id", async (req: Request, res: Response) => {
   const { id } = req.query
 
   if (id) {
     const getUsersByIdResponse = await getUserById(id as string)
 
-    res.json(getUsersByIdResponse)
+    if (!getUsersByIdResponse) {
+      res.status(404).json({
+        status: "error",
+        message: "Utilizador não encontrado",
+        data: null
+      })
+    }
+
+    res.status(200).json({
+      status: "sucess",
+      message: "Utilizador encontrado",
+      data: getUsersByIdResponse
+    })
+
+    // res.json(getUsersByIdResponse)
+  } else {
+    res.status(400).json({
+      status: "error",
+      message: "Id é obrigatório",
+      data: null
+    })
+  }
+})
+
+
+
+//criar utilizador
+app.post("/create-user", async (req: Request, res: Response) => {
+  const user: UserType = req.body
+
+  if(!user){
+    res.status(400).json({
+      status: "error",
+      message: "Dados do utilizador inválidos",
+      data: null
+    })
   }
 
-  
-
+  console.log(user);
+  const createUserResponse = await createUser(user)
+  res.json(createUserResponse)
 })
