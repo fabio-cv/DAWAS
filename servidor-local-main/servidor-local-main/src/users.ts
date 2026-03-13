@@ -33,7 +33,7 @@ export async function createUser(user: UserType) {
             `INSERT INTO tabela_utilizadores
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [user.id, user.nome, user.numero_identificacao, user.data_nascimento, user.email, user.telefone, 
-                user.pais, user.localidade, user.password, user.enabled, user.created_at, user.updated_at]
+                user.pais, user.localidade, user.password, user.enabled, new Date, new Date]
         )
         console.log({ rows });
         return rows
