@@ -13,11 +13,13 @@ export interface ResponseType {
 }
 
 export interface ServicoType {
+    id: number,
     nome: string,
-    precoHora: number
+    desconto: string
     categoria: string
-    minimoDescontado: number
-    percentagemDesconto?: number
+    enabled: boolean
+    created_at: string,
+    updated_at: string
 }
 
 export interface PrestadorType {

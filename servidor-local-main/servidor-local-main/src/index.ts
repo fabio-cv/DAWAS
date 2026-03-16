@@ -14,10 +14,20 @@ app.get("/", (req: Request, res: Response) => {
 
 
 // rota para adicionar um serviço novo
-app.post("/adicionar-servico", (req: Request, res: Response) => {
+app.post("/adicionar-servico", async (req: Request, res: Response) => {
   const novoServico = req.body
 
-  const addServicoResponse = adicionarServico(novoServico)
+  if (!novoServico) {
+    res.status(400).json(
+      {
+        status: "error",
+        message: "Dados do prestador inválidos",
+        data: null
+      }
+    )
+  }
+
+  const addServicoResponse = await adicionarServico(novoServico)
 
   res.json(addServicoResponse)
 })
@@ -90,16 +100,16 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
 app.post("/criar-prestador", async (req: Request, res: Response) => {
   const novoPrestador: PrestadorType = req.body
 
-  if(!novoPrestador){
+  if (!novoPrestador) {
     res.status(400).json(
       {
-      status: "error",
-      message: "Dados do prestador inválidos",
-      data: null
-    })
+        status: "error",
+        message: "Dados do prestador inválidos",
+        data: null
+      })
   }
 
-  const novoPrestadorResponse = await  criarPrestadoresDeServico(novoPrestador)
+  const novoPrestadorResponse = await criarPrestadoresDeServico(novoPrestador)
 
   res.json(novoPrestadorResponse)
 })
@@ -176,7 +186,7 @@ app.get("/get-user-by-id", async (req: Request, res: Response) => {
 app.post("/create-user", async (req: Request, res: Response) => {
   const user: UserType = req.body
 
-  if(!user){
+  if (!user) {
     res.status(400).json({
       status: "error",
       message: "Dados do utilizador inválidos",

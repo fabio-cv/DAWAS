@@ -1,4 +1,5 @@
 
+import db from "./lib/db.js";
 import { type ResponseType, type ServicoType } from "./utils/types.js"
 
 export let catalogoServicos: ServicoType[] = [
@@ -27,32 +28,34 @@ export let catalogoServicos: ServicoType[] = [
 ]
 
 // adicionar um serviço novo
-export function adicionarServico(novoServico: ServicoType): ResponseType {
-    if (!novoServico.nome || novoServico.precoHora <= 0) {
-        return ({
-            status: false,
-            message: "Erro: Nome obrigatório e preço deve ser maior que zero.",
-            data: null,
-        });
-    }
+export async function adicionarServico(novoServico: ServicoType) {
 
-    for (let i = 0; i < catalogoServicos.length; i++) {
-        if (catalogoServicos[i]?.nome === novoServico.nome) {
+    try {
+        if (!novoServico.nome) {
             return ({
                 status: false,
-                message: `Erro: O serviço '${novoServico.nome}' já existe.`,
+                message: "Erro: Nome obrigatório e preço deve ser maior que zero.",
                 data: null,
             });
         }
+
+        const [rows] = await db.execute(
+            `INSERT INTO tabela_servicos VALUES(?, ?, ?, ?, ?, ?, ?)`, [null, novoServico.nome, novoServico.desconto, novoServico.categoria, novoServico.enabled, new Date, new Date]
+        )
+        console.log({ rows });
+
+        return {
+            status: true,
+            message: `Sucesso ao adicionar serviço`, 
+            data: rows
+        }
+
+    } catch (error) {
+        console.log(error);
+        return null
+        
     }
 
-    catalogoServicos.push(novoServico);
-
-    return ({
-        status: true,
-        message: "Sucesso: Serviço adicionado!",
-        data: novoServico,
-    });
 }
 
 // listar todos os serviços
