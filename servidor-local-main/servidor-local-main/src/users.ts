@@ -25,7 +25,7 @@ export async function getUserById(id: string) {
 }
 
 
-//funcao parsa criar utilizador
+//funcao para criar utilizador
 export async function createUser(user: UserType) {
 
     try {

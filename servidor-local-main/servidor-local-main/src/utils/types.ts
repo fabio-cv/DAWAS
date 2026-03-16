@@ -21,12 +21,16 @@ export interface ServicoType {
 }
 
 export interface PrestadorType {
-    nome: string
-    precoHora: number
-    profissao: string
-    minimoParaDesconto: number
-    percentagemDesconto: number
-    taxaUrgencia: number
+    id: string,
+    nif: number,
+    profissao: string,
+    taxa_urgencia: number,
+    minimo_desconto: number,
+    percentagem_desconto: number,
+    disponivel: boolean,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
 }
 
 export interface UserType {

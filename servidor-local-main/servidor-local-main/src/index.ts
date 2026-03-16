@@ -3,7 +3,7 @@ import { adicionarServico, apagarServico, listarServicos, obterServico } from ".
 import { calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
 import { createUser, getUserById, getUsers } from "./users.js"
 import { error } from "node:console"
-import type { UserType } from "./utils/types.js"
+import type { PrestadorType, UserType } from "./utils/types.js"
 
 const app = express()
 app.use(express.json())
@@ -87,10 +87,19 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
 
 
 //rota para criar prestador
-app.post("/criar-prestador", (req: Request, res: Response) => {
-  const novoPrestador = req.body
+app.post("/criar-prestador", async (req: Request, res: Response) => {
+  const novoPrestador: PrestadorType = req.body
 
-  const novoPrestadorResponse = criarPrestadoresDeServico(novoPrestador)
+  if(!novoPrestador){
+    res.status(400).json(
+      {
+      status: "error",
+      message: "Dados do prestador inválidos",
+      data: null
+    })
+  }
+
+  const novoPrestadorResponse = await  criarPrestadoresDeServico(novoPrestador)
 
   res.json(novoPrestadorResponse)
 })
@@ -120,9 +129,6 @@ app.put("/editar-prestador", (req: Request, res: Response) => {
   res.json(editarPrestadorResponse)
 })
 
-app.listen(8080, () => {
-  console.log("Server running on port 8080")
-})
 
 
 //selecionar todos os utilizadores na base de dados 
@@ -181,4 +187,8 @@ app.post("/create-user", async (req: Request, res: Response) => {
   console.log(user);
   const createUserResponse = await createUser(user)
   res.json(createUserResponse)
+})
+
+app.listen(8080, () => {
+  console.log("Server running on port 8080")
 })
