@@ -9,30 +9,24 @@ export interface PedidoServicoType {
 export interface ResponseType {
     status: boolean,
     message: string,
-    data: ServicoType| PrestadorType | null,
+    data: ServicoType | null,
 }
 
 export interface ServicoType {
-    id: number,
     nome: string,
-    desconto: string
+    precoHora: number
     categoria: string
-    enabled: boolean
-    created_at: string,
-    updated_at: string
+    minimoDescontado: number
+    percentagemDesconto?: number
 }
 
 export interface PrestadorType {
-    id: string,
-    nif: number,
-    profissao: string,
-    taxa_urgencia: number,
-    minimo_desconto: number,
-    percentagem_desconto: number,
-    disponivel: boolean,
-    enabled: boolean,
-    created_at: string,
-    updated_at: string
+    nome: string
+    precoHora: number
+    profissao: string
+    minimoParaDesconto: number
+    percentagemDesconto: number
+    taxaUrgencia: number
 }
 
 export interface UserType {
@@ -45,6 +39,16 @@ export interface UserType {
     pais: string,
     localidade: string,
     password: string,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
+}
+
+export interface ServicoDBType {
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: string,
     enabled: boolean,
     created_at: string,
     updated_at: string
