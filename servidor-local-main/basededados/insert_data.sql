@@ -1,4 +1,4 @@
-INSERT INTO tbl_utilizadores (
+INSERT INTO tabela_utilizadores (
 	id,
     nome, 
 	numero_identificacao, 
@@ -26,7 +26,7 @@ INSERT INTO tbl_utilizadores (
     NOW()
 );
 
-INSERT INTO tbl_orcamento
+INSERT INTO tabela_orcamento
 VALUES (
 	NULL,
 	200, 
@@ -36,7 +36,7 @@ VALUES (
     NOW()
 );
 
-INSERT INTO tbl_servicos 
+INSERT INTO tabela_servicos 
 VALUES (
 	null, 
 	"Carpintaria",
@@ -47,7 +47,7 @@ VALUES (
     NOW()
 );
 
-INSERT INTO tbl_prestadores 
+INSERT INTO tabela_prestadores 
 VALUES (
 	"27acc54f-57cd-4b37-8c4a-be0a7bb5b3ac",
     143759005,

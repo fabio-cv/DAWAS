@@ -1,6 +1,6 @@
 
 
-CREATE TABLE tbl_prestadores(
+CREATE TABLE tabela_prestadores(
 	id VARCHAR(255) PRIMARY KEY NOT NULL,
 	nif INT NOT NULL,
     precoHora DECIMAL(10, 2) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE tbl_prestadores(
     updated_at DATETIME NOT NULL
 );
 
-ALTER TABLE tbl_prestadores
+ALTER TABLE tabela_prestadores
     DROP COLUMN taxaUrgencia,
     ADD COLUMN taxa_urgencia DECIMAL(10, 3) AFTER profissao,
     DROP COLUMN minimoDesconto,
@@ -24,7 +24,7 @@ ALTER TABLE tbl_prestadores
     DROP COLUMN precoHora
 ;
 
-CREATE TABLE tbl_utilizadores( 
+CREATE TABLE tabela_utilizadores( 
 	id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE, 
     nome VARCHAR(50) NOT NULL,
     `numero_identificacao` VARCHAR(100) NOT NULL UNIQUE,
@@ -39,7 +39,7 @@ CREATE TABLE tbl_utilizadores(
 	`update_at` DATETIME NOT NULL
 );
 
-CREATE TABLE tbl_servicos (
+CREATE TABLE tabela_servicos (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`nome` VARCHAR(50) NOT NULL,
 	`descricao` VARCHAR(255),
@@ -49,7 +49,7 @@ CREATE TABLE tbl_servicos (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tbl_orcamento` (
+CREATE TABLE IF NOT EXISTS `tabela_orcamento` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`total` DOUBLE NOT NULL,
 	`id_utilizadores` VARCHAR(255) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `tbl_orcamento` (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tbl_prestacao_servico` (
+CREATE TABLE IF NOT EXISTS `tabela_prestacao_servico` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`designacao` VARCHAR(100) NOT NULL,
 	`subtotal` DOUBLE NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `tbl_prestacao_servico` (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tbl_proposta` (
+CREATE TABLE IF NOT EXISTS `tabela_proposta` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`id_prestacao_servico` INTEGER NOT NULL,
 	`preco_hora` DOUBLE NOT NULL,
@@ -85,22 +85,22 @@ CREATE TABLE IF NOT EXISTS `tbl_proposta` (
 );
 
 
-ALTER TABLE tbl_proposta
+ALTER TABLE tabela_proposta
 	ADD CONSTRAINT fk_prestacao_servico_proposta
 	FOREIGN KEY (id_prestacao_servico)
-    REFERENCES tbl_prestacao_servico(id)
+    REFERENCES tabela_prestacao_servico(id)
 ;
 
-ALTER TABLE tbl_prestacao_servico
+ALTER TABLE tabela_prestacao_servico
 	ADD CONSTRAINT fk_prestadores_prestacao_servico
     FOREIGN KEY (id_prestador)
-    REFERENCES tbl_prestadores(id), 
+    REFERENCES tabela_prestadores(id), 
     ADD CONSTRAINT fk_servico_prestacao_servico
     FOREIGN KEY (id_servico)
-    REFERENCES tbl_servico(id)
+    REFERENCES tabela_servicos(id)
 ;
 
-ALTER TABLE tbl_utilizadores 
+ALTER TABLE tabela_utilizadores 
 	DROP COLUMN update_at, 
 	ADD COLUMN updated_at DATETIME NOT NULL
 ;
