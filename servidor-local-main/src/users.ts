@@ -1,5 +1,6 @@
 import db from "./lib/db.js"
 import type { UserType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 
 export async function getUsers() {
@@ -32,9 +33,9 @@ export async function createUser(user: UserType) {
     try {
         const [rows] = await db.execute(
             `INSERT INTO tbl_utilizadores 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                user.id,
+                generateUUID(),
                 user.nome,
                 user.numero_identificacao,
                 user.data_nascimento,

@@ -3,6 +3,7 @@ import { addServicesToDB, adicionarServico, apagarServico, deleteService, getAll
 import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
 import { createUser, getUserById, getUsers } from "./users.js"
 import type { ServicoDBType, UserType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 
 const app = express()
@@ -328,5 +329,4 @@ app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
 app.listen(8080, () => {
   console.log("Server running on port 8080")
 })
-
 
