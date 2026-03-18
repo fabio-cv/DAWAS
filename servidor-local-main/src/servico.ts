@@ -77,7 +77,7 @@ export async function addServicesToDB(newService: ServicoDBType) {
         const values = [
             null,
             newService.nome,
-            newService.descricao,
+            newService.desconto,
             newService.categoria,
             newService.enabled,
             new Date(),
@@ -131,17 +131,17 @@ export async function updateService(id: string, updatedService: ServicoDBType) {
         const query = `UPDATE tabela_servicos 
                         SET 
                             nome=?,
-                            descricao=?,
+                            desconto=?,
                             categoria=?,
                             enabled=?,
-                            updated_at=?
+                            update_at=?
                         WHERE
                             id=?
                         ;`
 
         const values = [
             updatedService.nome,
-            updatedService.descricao,
+            updatedService.desconto,
             updatedService.categoria,
             updatedService.enabled,
             new Date(),

@@ -47,9 +47,9 @@ export interface UserType {
 export interface ServicoDBType {
     id: string,
     nome: string,
-    descricao: string,
+    desconto: string,
     categoria: string,
     enabled: boolean,
     created_at: string,
-    updated_at: string
+    update_at: string
 }
