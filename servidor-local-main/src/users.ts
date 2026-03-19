@@ -59,4 +59,42 @@ export async function createUser(user: UserType) {
 
 
 
+export async function updateUser(id: string, updatedUser: UserType) {
+    try {
+        const query = `
+        UPDATE tabela_utilizadores
+        SET
+            nome=?,
+            numero_identificacao=?,
+            data_nascimento=?,
+            email=?,
+            telefone=?,
+            pais=?,
+            localidade=?,
+            password=?,
+            enabled=?,
+            updated_at=?
+        WHERE id=?
+        `
 
+        const values = [
+            updatedUser.nome, 
+            updatedUser.numero_identificacao,
+            updatedUser.data_nascimento,
+            updatedUser.email,
+            updatedUser.telefone,
+            updatedUser.pais,
+            updatedUser.localidade,
+            updatedUser.password,
+            updatedUser.enabled,
+            new Date(),
+            id
+        ]
+
+        const rows = await db.execute(query, values)
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+    }catch (err) {
+        console.log(err)
+        return null
+    }
+}
