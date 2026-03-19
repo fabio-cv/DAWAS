@@ -211,7 +211,12 @@ app.post("/create-user", async (req: Request, res: Response) => {
 
   const createUserResponse = await createUser(user);
 
-  res.json(createUserResponse);
+  res.status(201).json(
+    {
+      status: "successo",
+      message: "Utilizador criado com sucesso",
+      data: createUserResponse
+    });
 });
 
 //rota para criar um novo servico em db

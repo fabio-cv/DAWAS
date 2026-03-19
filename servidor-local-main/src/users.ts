@@ -1,10 +1,13 @@
+import { hash } from "node:crypto"
 import db from "./lib/db.js"
 import type { UserType } from "./utils/types.js"
 import { generateUUID } from "./utils/uuid.js"
+import { hashPassword } from "./utils/password.js"
+import { formatDateToDDMMYYYY } from "./utils/date.js"
 
 
 export async function getUsers() {
-    const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+    const [rows] = await db.execute("SELECT * FROM tabela_utilizadores")
 
     return rows
 }
@@ -15,8 +18,8 @@ export async function getUserById(id: string) {
 
     try {
         const [rows] = await db.execute(
-            `SELECT * FROM tbl_utilizadores 
-        WHERE tbl_utilizadores.id = ?`,
+            `SELECT * FROM tabela_utilizadores 
+        WHERE tabela_utilizadores.id = ?`,
 
             [id]
         )
@@ -32,18 +35,18 @@ export async function getUserById(id: string) {
 export async function createUser(user: UserType) {
     try {
         const [rows] = await db.execute(
-            `INSERT INTO tbl_utilizadores 
+            `INSERT INTO tabela_utilizadores 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 generateUUID(),
                 user.nome,
                 user.numero_identificacao,
-                user.data_nascimento,
+                formatDateToDDMMYYYY(user.data_nascimento),
                 user.email,
                 user.telefone,
                 user.pais,
                 user.localidade,
-                user.password,
+                await hashPassword(user.password),
                 user.enabled,
                 new Date(),
                 new Date()
@@ -80,12 +83,12 @@ export async function updateUser(id: string, updatedUser: UserType) {
         const values = [
             updatedUser.nome, 
             updatedUser.numero_identificacao,
-            updatedUser.data_nascimento,
+            formatDateToDDMMYYYY(updatedUser.data_nascimento),
             updatedUser.email,
             updatedUser.telefone,
             updatedUser.pais,
             updatedUser.localidade,
-            updatedUser.password,
+            await hashPassword(updatedUser.password), //não é correto atualizar a password desta forma, depois mudamos...
             updatedUser.enabled,
             new Date(),
             id

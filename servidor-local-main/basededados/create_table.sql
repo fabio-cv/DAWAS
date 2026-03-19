@@ -1,4 +1,5 @@
 
+-- drawDB no google para criar o diagrama da base de dados
 
 CREATE TABLE tabela_prestadores(
 	id VARCHAR(255) PRIMARY KEY NOT NULL,
