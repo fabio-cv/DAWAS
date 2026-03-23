@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { UserType } from "../utils/types.js";
-import { usersModel } from "../models/users.models.js";
+import { usersModel } from "../models/users.model.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const userController = {

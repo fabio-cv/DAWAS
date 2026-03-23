@@ -53,3 +53,38 @@ export interface ServicoDBType {
     created_at: string,
     update_at: string
 }
+
+
+export interface orcamentoDBType {
+    id: string,
+    total: number,
+    id_utilizador: string,
+    enabled: boolean,
+    created_at: string,
+    update_at: string
+}
+
+export interface propostaDBType{
+    id: string,
+    id_prestacao: number,
+    preco_hora: number,
+    horas_estimadas: number,
+    estado: string,
+    enabled: boolean,
+    created_at: string,
+    update_at: string
+}
+
+export interface prestacaoDBType {
+    id: string,
+    nif: string,
+    profissao: string,
+    taxa_urgencia: number,
+    minimo_desconto: number,
+    percentagem_desconto: number,
+    disponivel: boolean, //houve um erro na criação da tabela, a tabela tem a coluna "disponivel" e a coluna "enabled"
+    enabled: boolean,
+    created_at: string,
+    update_at: string
+
+}
