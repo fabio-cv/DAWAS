@@ -75,7 +75,7 @@ export interface propostaDBType{
     update_at: string
 }
 
-export interface prestacaoDBType {
+export interface prestadorDBType {
     id: string,
     nif: string,
     profissao: string,
