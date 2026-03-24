@@ -29,7 +29,7 @@ export interface PrestadorType {
     taxaUrgencia: number
 }
 
-export interface UserType {
+export interface UserDBType {
     id: string,
     nome: string,
     numero_identificacao: string,

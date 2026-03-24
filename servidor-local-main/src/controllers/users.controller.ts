@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import type { UserType } from "../utils/types.js";
+import type { UserDBType } from "../utils/types.js";
 import { usersModel } from "../models/users.model.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const userController = {
     async create(req: Request, res: Response) {
-        const user: UserType = req.body;
+        const user: UserDBType = req.body;
 
         if (!user) {
             res.status(400).json({
@@ -61,7 +61,7 @@ export const userController = {
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedUser: UserType = req.body;
+        const updatedUser: UserDBType = req.body;
 
         if (!id) {
             return res.status(400).json(

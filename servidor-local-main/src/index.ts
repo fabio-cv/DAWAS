@@ -9,7 +9,6 @@ const app = express();
 app.use(express.json());
 
 app.use("/services", serviceRouter);
-
 app.use("/users", usersRouter);
 app.use("/prestadores", prestadorRouter);
 app.use("/orcamentos", orcamentoRouter);

@@ -2,11 +2,11 @@ import { get } from "node:http";
 import db from "../lib/db.js";
 import { formatDateToDDMMYYYY } from "../utils/date.js";
 import { hashPassword } from "../utils/password.js";
-import type { UserType } from "../utils/types.js";
+import type { UserDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const usersModel = {
-    async create(user: UserType) {
+    async create(user: UserDBType) {
         try {
             const [rows] = await db.execute(
                 `INSERT INTO tabela_utilizadores 
@@ -60,7 +60,7 @@ export const usersModel = {
     },
 
 
-    async update(id: string, updatedUser: UserType) {
+    async update(id: string, updatedUser: UserDBType) {
         try {
             const query = `
         UPDATE tabela_utilizadores
