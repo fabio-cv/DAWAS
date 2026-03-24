@@ -88,3 +88,21 @@ export interface prestadorDBType {
     update_at: string
 
 }
+
+
+export interface PrestacaoServicoDBType{
+    id: number,
+    designacao: string,
+    subtotal: number,
+    horas_estimadas: number,
+    id_orcamento: number,
+    id_servico: number,
+    preco_hora: number,
+    estado: string,
+    finalizado: string,
+    id_prestador: string,
+    enabled: boolean,
+    created_at: string,
+    update_at: string
+
+} 

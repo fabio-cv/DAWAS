@@ -1,51 +1,51 @@
 import type { Request, Response } from "express";
-import { OrcamentoModel } from "../models/orcamento.model.js";
-import type { orcamentoDBType } from "../utils/types.js";
+import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
+import type { PrestacaoServicoDBType } from "../utils/types.js";
 
-export const OrcamentoController = {
+export const PrestacaoServicoController = {
     async create(req: Request, res: Response) {
-        const newOrcamento: orcamentoDBType = req.body;
+        const newPrestacaoServico: PrestacaoServicoDBType = req.body;
 
-        if (!newOrcamento) {
+        if (!newPrestacaoServico) {
             return res.status(400).json({
                 status: "error",
-                message: "Dados de orcamento invalidos",
+                message: "Dados de prestacao de servico invalidos",
                 data: null
             });
         }
 
-        const createOrcamentoResponse = await OrcamentoModel.create(newOrcamento);
+        const createPrestacaoServicoResponse = await PrestacaoServicoModel.create(newPrestacaoServico);
 
-        if (createOrcamentoResponse === null) {
+        if (createPrestacaoServicoResponse === null) {
             return res.status(400).json({
                 status: "error",
-                message: "Erro ao criar orcamento",
+                message: "Erro ao criar prestacao de servico",
                 data: null
             });
         }
 
         return res.status(201).json({
             status: "success",
-            message: "Orcamento criado com sucesso",
-            data: createOrcamentoResponse
+            message: "Prestacao de servico criada com sucesso",
+            data: createPrestacaoServicoResponse
         });
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllOrcamentoResponse = await OrcamentoModel.getAll();
+        const getAllPrestacaoServicoResponse = await PrestacaoServicoModel.getAll();
 
-        if (!getAllOrcamentoResponse) {
+        if (!getAllPrestacaoServicoResponse) {
             return res.status(500).json({
                 status: "error",
-                message: "Erro ao buscar orcamentos",
+                message: "Erro ao buscar prestacoes de servico",
                 data: null
             });
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Orcamentos buscados com sucesso",
-            data: getAllOrcamentoResponse
+            message: "Prestacoes de servico buscadas com sucesso",
+            data: getAllPrestacaoServicoResponse
         });
     },
 
@@ -55,31 +55,31 @@ export const OrcamentoController = {
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "ID de orcamento nao fornecido",
+                message: "ID de prestacao de servico nao fornecido",
                 data: null
             });
         }
 
-        const getOrcamentoResponse = await OrcamentoModel.get(id as string);
+        const getPrestacaoServicoResponse = await PrestacaoServicoModel.get(id as string);
 
-        if (!getOrcamentoResponse) {
+        if (!getPrestacaoServicoResponse) {
             return res.status(404).json({
                 status: "error",
-                message: "Orcamento nao encontrado",
+                message: "Prestacao de servico nao encontrada",
                 data: null
             });
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Orcamento encontrado com sucesso",
-            data: getOrcamentoResponse
+            message: "Prestacao de servico encontrada com sucesso",
+            data: getPrestacaoServicoResponse
         });
     },
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedOrcamento: orcamentoDBType = req.body;
+        const updatedPrestacaoServico: PrestacaoServicoDBType = req.body;
 
         if (!id) {
             return res.status(400).json({
@@ -89,28 +89,28 @@ export const OrcamentoController = {
             });
         }
 
-        if (!updatedOrcamento) {
+        if (!updatedPrestacaoServico) {
             return res.status(400).json({
                 status: "error",
-                message: "Dados de orcamento invalidos",
+                message: "Dados de prestacao de servico invalidos",
                 data: null,
             });
         }
 
-        const updateOrcamentoResponse = await OrcamentoModel.update(id as string, updatedOrcamento);
+        const updatePrestacaoServicoResponse = await PrestacaoServicoModel.update(id as string, updatedPrestacaoServico);
 
-        if (!updateOrcamentoResponse) {
+        if (!updatePrestacaoServicoResponse) {
             return res.status(400).json({
                 status: "error",
-                message: "Erro ao atualizar orcamento",
+                message: "Erro ao atualizar prestacao de servico",
                 data: null,
             });
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Orcamento atualizado com sucesso",
-            data: updateOrcamentoResponse,
+            message: "Prestacao de servico atualizada com sucesso",
+            data: updatePrestacaoServicoResponse,
         });
     },
 
@@ -125,20 +125,20 @@ export const OrcamentoController = {
             });
         }
 
-        const deleteOrcamentoResponse = await OrcamentoModel.delete(id as string);
+        const deletePrestacaoServicoResponse = await PrestacaoServicoModel.delete(id as string);
 
-        if (!deleteOrcamentoResponse) {
+        if (!deletePrestacaoServicoResponse) {
             return res.status(400).json({
                 status: "error",
-                message: "Erro ao apagar orcamento",
+                message: "Erro ao apagar prestacao de servico",
                 data: null,
             });
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Orcamento apagado com sucesso",
-            data: deleteOrcamentoResponse,
+            message: "Prestacao de servico apagada com sucesso",
+            data: deletePrestacaoServicoResponse,
         });
     }
 };

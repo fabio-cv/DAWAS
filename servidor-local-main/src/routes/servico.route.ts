@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ServicoController } from "../controllers/servico.controller.js";
 
-const ServiceRoute = {
+const ServicoRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",
@@ -11,11 +11,11 @@ const ServiceRoute = {
 
 const router = Router()
 
-router.get(ServiceRoute.getAll, ServicoController.getAll)
-router.get(ServiceRoute.getById, ServicoController.get)
-router.post(ServiceRoute.create, ServicoController.CreateServico)
-router.put(ServiceRoute.update, ServicoController.update)
-router.delete(ServiceRoute.delete, ServicoController.delete)
+router.get(ServicoRoute.getAll, ServicoController.getAll)
+router.get(ServicoRoute.getById, ServicoController.get)
+router.post(ServicoRoute.create, ServicoController.CreateServico)
+router.put(ServicoRoute.update, ServicoController.update)
+router.delete(ServicoRoute.delete, ServicoController.delete)
 
 
 export { router };

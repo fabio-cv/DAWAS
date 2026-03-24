@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import type { UserDBType } from "../utils/types.js";
-import { usersModel } from "../models/users.model.js";
+import { UsersModel } from "../models/user.model.js";
 import { generateUUID } from "../utils/uuid.js";
 
-export const userController = {
+export const UserController = {
     async create(req: Request, res: Response) {
         const user: UserDBType = req.body;
 
@@ -17,26 +17,25 @@ export const userController = {
 
         console.log(user);
 
-        const createUserResponse = await usersModel.create(user);
+        const createUserResponse = await UsersModel.create(user);
 
-        res.status(201).json(
-            {
-                status: "successo",
-                message: "Utilizador criado com sucesso",
-                data: createUserResponse
-            });
+        res.status(201).json({
+            status: "successo",
+            message: "Utilizador criado com sucesso",
+            data: createUserResponse
+        });
     },
 
 
     async getAll(req: Request, res: Response) {
-        const getUsersResponse = await usersModel.getAll();
+        const getUsersResponse = await UsersModel.getAll();
 
         res.json(getUsersResponse);
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
-        const getUserResponse = await usersModel.get(id as string);
+        const getUserResponse = await UsersModel.get(id as string);
 
         if (!id) {
             return res.status(400).json({
@@ -83,7 +82,7 @@ export const userController = {
             )
         }
 
-        const updateUserResponse = await usersModel.update(generateUUID(), updatedUser);
+        const updateUserResponse = await UsersModel.update(generateUUID(), updatedUser);
 
         if (!updateUserResponse) {
             return res.status(400).json(
@@ -115,7 +114,7 @@ export const userController = {
             });
         }
 
-        const deleteUserResponse = await usersModel.delete(id as string);
+        const deleteUserResponse = await UsersModel.delete(id as string);
 
         if (!deleteUserResponse) {
             return res.status(400).json({

@@ -4,53 +4,50 @@ import type { Request, Response } from "express";
 
 export const ServicoController = {
     async CreateServico(req: Request, res: Response) {
-        const newService: ServicoDBType = req.body;
+        const newServico: ServicoDBType = req.body;
 
-        if (!newService) {
+        if (!newServico) {
             return res.status(400).json({
                 status: "error",
                 message: "Dados de servico invalidos",
-                data: null
-            })
+                data: null,
+            });
         }
 
-        const createServicoResponse = await ServicoModel.create(newService);
+        const createServicoResponse = await ServicoModel.create(newServico);
 
         if (createServicoResponse === null) {
             return res.status(400).json({
                 status: "error",
                 message: "Erro ao criar servico",
-                data: null
-            })
+                data: null,
+            });
         }
 
-        return res.status(200).json({
+        return res.status(201).json({
             status: "success",
             message: "Servico criado com sucesso",
-            data: createServicoResponse
-        })
+            data: createServicoResponse,
+        });
     },
 
-
     async getAll(req: Request, res: Response) {
-        const getAllServiceResponse = await ServicoModel.getAll();
+        const getAllServicoResponse = await ServicoModel.getAll();
 
-        if (!getAllServiceResponse) {
+        if (!getAllServicoResponse) {
             return res.status(500).json({
                 status: "error",
                 message: "Erro ao buscar servicos",
-                data: null
-            })
+                data: null,
+            });
         }
-
 
         return res.status(200).json({
             status: "success",
             message: "Servicos buscados com sucesso",
-            data: getAllServiceResponse
-        })
+            data: getAllServicoResponse,
+        });
     },
-
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
@@ -59,31 +56,31 @@ export const ServicoController = {
             return res.status(400).json({
                 status: "error",
                 message: "ID de servico nao fornecido",
-                data: null
-            })
+                data: null,
+            });
         }
 
-        const getServiceResponse = await ServicoModel.get(id as string);
+        const getServicoResponse = await ServicoModel.get(id as string);
 
-        if (!getServiceResponse) {
+        if (!getServicoResponse) {
             return res.status(404).json({
                 status: "error",
                 message: "Servico nao encontrado",
-                data: null
-            })
+                data: null,
+            });
         }
 
         return res.status(200).json({
             status: "success",
             message: "Servico encontrado com sucesso",
-            data: getServiceResponse
-        })
+            data: getServicoResponse,
+        });
     },
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
 
-        const updatedService: ServicoDBType = req.body;
+        const updatedServico: ServicoDBType = req.body;
 
         if (!id) {
             return res.status(400).json({
@@ -93,7 +90,7 @@ export const ServicoController = {
             });
         }
 
-        if (!updatedService) {
+        if (!updatedServico) {
             return res.status(400).json({
                 status: "error",
                 message: "Dados de servico invalidos",
@@ -101,9 +98,12 @@ export const ServicoController = {
             });
         }
 
-        const updateServiceResponse = await ServicoModel.update(id as string, updatedService);
+        const updateServicoResponse = await ServicoModel.update(
+            id as string,
+            updatedServico,
+        );
 
-        if (!updateServiceResponse) {
+        if (!updateServicoResponse) {
             return res.status(400).json({
                 status: "error",
                 message: "Erro ao atualizar servico",
@@ -114,7 +114,7 @@ export const ServicoController = {
         return res.status(200).json({
             status: "success",
             message: "Servico atualizado com sucesso",
-            data: updateServiceResponse,
+            data: updateServicoResponse,
         });
     },
 
@@ -129,9 +129,9 @@ export const ServicoController = {
             });
         }
 
-        const deleteServiceResponse = await ServicoModel.delete(id as string);
+        const deleteServicoResponse = await ServicoModel.delete(id as string);
 
-        if (!deleteServiceResponse) {
+        if (!deleteServicoResponse) {
             return res.status(400).json({
                 status: "error",
                 message: "Erro ao apagar servico",
@@ -142,8 +142,7 @@ export const ServicoController = {
         return res.status(200).json({
             status: "success",
             message: "Servico apagado com sucesso",
-            data: deleteServiceResponse,
+            data: deleteServicoResponse,
         });
-    }
-
-}
+    },
+};

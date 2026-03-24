@@ -3,16 +3,16 @@ import { updateService } from "../servico.js";
 import type { ServicoDBType } from "../utils/types.js";
 
 export const ServicoModel = {
-    async create(newService: ServicoDBType) {
+    async create(newServico: ServicoDBType) {
         try {
             const query = `INSERT INTO tabela_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
             const values = [
                 null,
-                newService.nome,
-                newService.desconto,
-                newService.categoria,
-                newService.enabled,
+                newServico.nome,
+                newServico.desconto,
+                newServico.categoria,
+                newServico.enabled,
                 new Date(),
                 new Date(),
             ];
@@ -56,7 +56,7 @@ export const ServicoModel = {
         }
     },
 
-    async update(id: string, updatedService: ServicoDBType) {
+    async update(id: string, updatedServico: ServicoDBType) {
         try {
             const query = `UPDATE tabela_servicos 
                         SET 
@@ -70,10 +70,10 @@ export const ServicoModel = {
                         ;`;
 
             const values = [
-                updatedService.nome,
-                updatedService.desconto,
-                updatedService.categoria,
-                updatedService.enabled,
+                updatedServico.nome,
+                updatedServico.desconto,
+                updatedServico.categoria,
+                updatedServico.enabled,
                 new Date(),
                 id,
             ];

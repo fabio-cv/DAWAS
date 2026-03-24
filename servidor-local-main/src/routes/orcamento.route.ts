@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { orcamentoController } from "../controllers/orcamento.controller.js";
+import { OrcamentoController } from "../controllers/orcamento.controller.js";
 
 const OrcamentoRouter = {
     create: "/create",
@@ -11,10 +11,10 @@ const OrcamentoRouter = {
 
 const router = Router();
 
-router.get(OrcamentoRouter.getAll, orcamentoController.getAll);
-router.get(OrcamentoRouter.getById, orcamentoController.get);
-router.post(OrcamentoRouter.create, orcamentoController.create);
-router.put(OrcamentoRouter.update, orcamentoController.update);
-router.delete(OrcamentoRouter.delete, orcamentoController.delete);
+router.get(OrcamentoRouter.getAll, OrcamentoController.getAll);
+router.get(OrcamentoRouter.getById, OrcamentoController.get);
+router.post(OrcamentoRouter.create, OrcamentoController.create);
+router.put(OrcamentoRouter.update, OrcamentoController.update);
+router.delete(OrcamentoRouter.delete, OrcamentoController.delete);
 
 export { router };

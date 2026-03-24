@@ -5,7 +5,7 @@ import { hashPassword } from "../utils/password.js";
 import type { UserDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
-export const usersModel = {
+export const UsersModel = {
     async create(user: UserDBType) {
         try {
             const [rows] = await db.execute(

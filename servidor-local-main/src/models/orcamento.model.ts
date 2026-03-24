@@ -2,7 +2,7 @@ import { get } from "node:http";
 import db from "../lib/db.js";
 import type { orcamentoDBType } from "../utils/types.js";
 
-export const orcamentoModel = {
+export const OrcamentoModel = {
     async create(orcamento: orcamentoDBType) {
         try {
             const query = `INSERT INTO tabela_orcamento VALUES (?, ?, ?, ?, ?, ?)`;

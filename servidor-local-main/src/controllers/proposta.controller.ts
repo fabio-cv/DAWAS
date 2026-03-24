@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { propostaModel } from "../models/proposta.model.js";
+import { PropostaModel } from "../models/proposta.model.js";
 import type { propostaDBType } from "../utils/types.js";
 
-export const propostaController = {
+export const PropostaController = {
     async create(req: Request, res: Response) {
         const newProposta: propostaDBType = req.body;
 
@@ -14,7 +14,7 @@ export const propostaController = {
             });
         }
 
-        const createPropostaResponse = await propostaModel.create(newProposta);
+        const createPropostaResponse = await PropostaModel.create(newProposta);
 
         if (createPropostaResponse === null) {
             return res.status(400).json({
@@ -24,7 +24,7 @@ export const propostaController = {
             });
         }
 
-        return res.status(200).json({
+        return res.status(201).json({
             status: "success",
             message: "Proposta criada com sucesso",
             data: createPropostaResponse
@@ -32,7 +32,7 @@ export const propostaController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllPropostaResponse = await propostaModel.getAll();
+        const getAllPropostaResponse = await PropostaModel.getAll();
 
         if (!getAllPropostaResponse) {
             return res.status(500).json({
@@ -60,7 +60,7 @@ export const propostaController = {
             });
         }
 
-        const getPropostaResponse = await propostaModel.get(id as string);
+        const getPropostaResponse = await PropostaModel.get(id as string);
 
         if (!getPropostaResponse) {
             return res.status(404).json({
@@ -97,7 +97,7 @@ export const propostaController = {
             });
         }
 
-        const updatePropostaResponse = await propostaModel.update(id as string, updatedProposta);
+        const updatePropostaResponse = await PropostaModel.update(id as string, updatedProposta);
 
         if (!updatePropostaResponse) {
             return res.status(400).json({
@@ -125,7 +125,7 @@ export const propostaController = {
             });
         }
 
-        const deletePropostaResponse = await propostaModel.delete(id as string);
+        const deletePropostaResponse = await PropostaModel.delete(id as string);
 
         if (!deletePropostaResponse) {
             return res.status(400).json({
