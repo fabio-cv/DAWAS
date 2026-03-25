@@ -45,7 +45,7 @@ export interface UserDBType {
 }
 
 export interface ServicoDBType {
-    id: string,
+    id: number,
     nome: string,
     desconto: string,
     categoria: string,
