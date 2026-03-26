@@ -78,7 +78,7 @@ paths:
                     type: object
                     $ref: "#/components/schemas/RespostaError"
 
-    /service/update/{id}:
+    /servicos/update/{id}:
       put:
         summary: Atualizar um serviço existente
         description: Atualiza os detalhes de um serviço específico usando seu ID
@@ -120,9 +120,46 @@ paths:
                   type: object
                   $ref: "#/components/schemas/RespostaError"
 
+    /servicos/delete/{id}:
+      delete:
+        summary: Apagar um serviço
+        description: Apaga um serviço especifico pelo ID   
+        parameters: 
+          - name: id
+            in: path
+            required: true
+            description: ID do serviço a ser apagado
+            schema:
+              type: integer
+              example: 1
+        response:
+          "200":
+            description: Serviço apagado  com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaSucesso"
+          "400":
+            description: Dados inválidos
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaError"
+          "404":
+            description: Serviço não encontrado
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaError"
+      
+              
                   
                   
                   
 
 
           
+ 

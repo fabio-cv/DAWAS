@@ -16,14 +16,12 @@ const options: swaggerJsdoc.Options = {
                 description: "dev",
             }
         ],
+    },
 
-        apis: [
-            path.join(process.cwd(), "./src/docs/schemas/*.yaml"),
-            path.join(process.cwd(), "./src/docs/paths/*.yaml"),
-        ]
-
-        
-    }
+    apis: [
+        path.join(process.cwd(), "./src/docs/schemas/*.yaml"),
+        path.join(process.cwd(), "./src/docs/paths/*.yaml"),
+    ]
 
 
 }
