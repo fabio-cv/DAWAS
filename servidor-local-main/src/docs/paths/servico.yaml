@@ -32,7 +32,97 @@ paths:
             application/json:
               schema:
                 type: object
-                
-              
-              
-                
+                $ref: "#/components/schemas/CreateService"
+        responses:
+          "201":
+            description: Serviço criado com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaSucesso"
+
+          "400":
+            description: Requisição inválida
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaError"
+
+    /servicos/get-by-id/{id}:
+      get:
+        summary: Obter serviço por ID
+        description: Retorna os detalhes de um serviço específico usando seu ID
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID do serviço 
+            schema:
+              type: integer
+              example: 1
+        responses:
+          "200":
+            description: Serviço encontrado 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaSucesso"
+            "404":
+              description: Serviço não encontrado
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    $ref: "#/components/schemas/RespostaError"
+
+    /service/update/{id}:
+      put:
+        summary: Atualizar um serviço existente
+        description: Atualiza os detalhes de um serviço específico usando seu ID
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID do serviço a ser atualizado
+            schema:
+              type: integer
+              example: 1
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/CreateService"
+        responses:
+          "200":
+            description: Serviço encontrado 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaSucesso"
+          "400":
+            description: Dados inválidos
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaError"
+          "404":
+            description: Serviço não encontrado
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: "#/components/schemas/RespostaError"
+
+                  
+                  
+                  
+
+
+          
