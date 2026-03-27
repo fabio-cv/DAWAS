@@ -1,0 +1,80 @@
+# schema/prestador.yaml
+
+components:
+  schemas:
+    # schema principal do prestador
+    prestadores:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "abc123xyz"
+
+        nif:
+          type: string
+          example: "123456789"
+
+        profissao:
+          type: string
+          example: "Eletricista"
+
+        taxa_urgencia:
+          type: number
+          example: 1.5
+
+        minimo_desconto:
+          type: number
+          example: 100
+
+        percentagem_desconto:
+          type: number
+          example: 10
+
+        disponivel:
+          type: boolean
+          example: true
+
+        enabled:
+          type: boolean
+          example: true
+
+        created_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+        update_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+
+    # schema para criar um novo prestador
+    CreatePrestador:
+      type: object
+      properties:
+        nif:
+          type: string
+          example: "erg8ryg7fgtr"
+
+        profissao:
+          type: string
+          example: "Eletricista"
+
+        taxa_urgencia:
+          type: number
+          example: 1.5
+
+        minimo_desconto:
+          type: number
+          example: 100
+
+        percentagem_desconto:
+          type: number
+          example: 10
+
+        disponivel:
+          type: boolean
+          example: true
+
+        enabled:
+          type: boolean
+          example: true

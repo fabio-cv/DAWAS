@@ -1,0 +1,116 @@
+# schema/user.yaml
+
+components:
+  schemas: 
+    # schema principal de usuário
+    users:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "jfufhebgfkjehvgbef"
+
+        nome: 
+          type: string
+          example: "Fábio Barros"
+
+        numero_identificacao:
+          type: string
+          example: "MUHR"
+
+        email:
+          type: string
+          example: "[EMAIL_ADDRESS]"
+
+        telefone:
+          type: string
+          example: "87887986"
+
+        pais:
+          type: string
+          example: "Cabo verde"
+
+        localidade:
+          type: string
+          example: "Praia"
+
+        enabled:
+          type: boolean
+          example: true
+
+        created_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+        update_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+    # schema para criar um novo usuário
+    CreateUser:
+      type: object
+      properties:
+        nome: 
+          type: string
+          example: "Fábio Barros"
+
+        numero_identificacao:
+          type: string
+          example: "MUHR"
+
+        email:
+          type: string
+          example: "[EMAIL_ADDRESS]"
+
+        telefone:
+          type: string
+          example: "87887986"
+
+        pais:
+          type: string
+          example: "Cabo verde"
+
+        localidade:
+          type: string
+          example: "Praia"
+
+        password:
+          type: string
+          example: "123456"
+
+        enabled:
+          type: boolean
+          example: true
+
+    # # schema generico para resposta de sucesso
+    # RespostaSucesso:
+    #   type: object
+    #   properties:
+    #     message: 
+    #       type: string
+    #       example: "Usuário criado com sucesso"
+
+    #     status:
+    #       type: boolean
+    #       example: true
+        
+    #     data: 
+    #       type: object
+    #       properties:
+    #         $ref: "#/components/schemas/users"
+
+    # # schema generico para resposta de erro
+    # RespostaError:
+    #   type: object
+    #   properties:
+    #     message:
+    #       type: string
+    #       example: "Erro ao buscar usuário"
+
+    #   status:
+    #     type: boolean
+    #     example: false
+
+    #   data: 
+    #     type: object
+    #     properties: null

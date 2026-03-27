@@ -1,45 +1,45 @@
-# path/servico.yaml
+# path/prestacaoServico.yaml
 
 paths:
-  /servicos:
+  /prestacao-servicos:
     get:
       tags:
-        - Serviços
-      summary: Listar todos os serviços
-      description: Retorna uma lista de todos os serviços disponíveis
+        - Prestações de Serviço
+      summary: Listar todas as prestações de serviço
+      description: Retorna uma lista de todas as prestações de serviço disponíveis
       responses:
         "200":
-          description: Lista de serviços retornada com sucesso
+          description: Lista de prestações de serviço retornada com sucesso
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/servicos"
+                  $ref: "#/components/schemas/prestacaoServicos"
         "404":
-          description: Nenhum serviço encontrado
+          description: Nenhuma prestação de serviço encontrada
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/create:
+  /prestacao-servicos/create:
     post:
       tags:
-        - Serviços
-      summary: Criar um novo serviço
-      description: Adiciona um novo serviço ao sistema
+        - Prestações de Serviço
+      summary: Criar uma nova prestação de serviço
+      description: Adiciona uma nova prestação de serviço ao sistema
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreatePrestacaoServico"
       responses:
         "201":
-          description: Serviço criado com sucesso
+          description: Prestação de serviço criada com sucesso
           content:
             application/json:
               schema:
@@ -53,47 +53,54 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/get-by-id/{id}:
+  /prestacao-servicos/get-by-id/{id}:
     get:
       tags:
-        - Serviços
-      summary: Obter serviço por ID
-      description: Retorna os detalhes de um serviço específico usando seu ID
+        - Prestações de Serviço
+      summary: Obter prestação de serviço por ID
+      description: Retorna os detalhes de uma prestação de serviço específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço
+          description: ID da prestação de serviço
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Serviço encontrado com sucesso
+          description: Prestação de serviço encontrada com sucesso
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSucesso"
         "404":
-          description: Serviço não encontrado
+          description: Prestação de serviço não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "400":
+          description: Requisição inválida
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/update/{id}:
+  /prestacao-servicos/update/{id}:
     put:
       tags:
-        - Serviços
-      summary: Atualizar um serviço existente
-      description: Atualiza os detalhes de um serviço específico usando seu ID
+        - Prestações de Serviço
+      summary: Atualizar uma prestação de serviço existente
+      description: Atualiza os detalhes de uma prestação de serviço específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser atualizado
+          description: ID da prestação de serviço a ser atualizada
           schema:
             type: integer
             example: 1
@@ -103,10 +110,10 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreatePrestacaoServico"
       responses:
         "200":
-          description: Serviço atualizado com sucesso
+          description: Prestação de serviço atualizada com sucesso
           content:
             application/json:
               schema:
@@ -120,30 +127,30 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Serviço não encontrado
+          description: Prestação de serviço não encontrada
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/delete/{id}:
+  /prestacao-servicos/delete/{id}:
     delete:
       tags:
-        - Serviços
-      summary: Apagar um serviço
-      description: Apaga um serviço específico pelo ID
+        - Prestações de Serviço
+      summary: Apagar uma prestação de serviço
+      description: Apaga uma prestação de serviço específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser apagado
+          description: ID da prestação de serviço a ser apagada
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Serviço apagado com sucesso
+          description: Prestação de serviço apagada com sucesso
           content:
             application/json:
               schema:
@@ -157,7 +164,7 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Serviço não encontrado
+          description: Prestação de serviço não encontrada
           content:
             application/json:
               schema:

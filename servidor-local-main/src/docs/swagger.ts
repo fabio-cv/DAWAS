@@ -16,6 +16,27 @@ const options: swaggerJsdoc.Options = {
                 description: "dev",
             }
         ],
+
+        tags: [
+            {
+                name: "Usuários",
+            },
+            {
+                name: "Serviços",
+            },
+            {
+                name: "Prestadores",
+            },
+            {
+                name: "Orçamentos",
+            },
+            {
+                name: "Propostas",
+            },
+            {
+                name: "Prestações de Serviço",
+            },
+        ],
     },
 
     apis: [

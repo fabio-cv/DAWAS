@@ -1,0 +1,48 @@
+# schema/orcamento.yaml
+
+components:
+  schemas:
+    # schema principal do orçamento
+    orcamentos:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "abc123xyz"
+
+        total:
+          type: number
+          example: 250.00
+
+        id_utilizador:
+          type: string
+          example: "jfufhebgfkjehvgbef"
+
+        enabled:
+          type: boolean
+          example: true
+
+        created_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+        update_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+
+    # schema para criar um novo orçamento
+    CreateOrcamento:
+      type: object
+      properties:
+        total:
+          type: number
+          example: 250.00
+    
+        id_utilizador:
+          type: string
+          example: "jfufhebgfkjehvgbef"
+
+        enabled:
+          type: boolean
+          example: true

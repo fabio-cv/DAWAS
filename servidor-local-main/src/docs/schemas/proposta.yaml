@@ -1,0 +1,64 @@
+# schema/proposta.yaml
+
+components:
+  schemas:
+    # schema principal da proposta
+    propostas:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "abc123xyz"
+
+        id_prestacao:
+          type: number
+          example: 1
+
+        preco_hora:
+          type: number
+          example: 50.00
+
+        horas_estimadas:
+          type: number
+          example: 4
+
+        estado:
+          type: string
+          example: "pendente"
+
+        enabled:
+          type: boolean
+          example: true
+
+        created_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+        update_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+
+    # schema para criar uma nova proposta
+    CreateProposta:
+      type: object
+      properties:
+        id_prestacao:
+          type: number
+          example: 1
+
+        preco_hora:
+          type: number
+          example: 50.00
+
+        horas_estimadas:
+          type: number
+          example: 4
+
+        estado:
+          type: string
+          example: "pendente"
+
+        enabled:
+          type: boolean
+          example: true

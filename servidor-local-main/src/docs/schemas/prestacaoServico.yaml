@@ -1,0 +1,96 @@
+# schema/prestacaoServico.yaml
+
+components:
+  schemas:
+    # schema principal da prestação de serviço
+    prestacaoServicos:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+
+        designacao:
+          type: string
+          example: "Limpeza de escritório"
+
+        subtotal:
+          type: number
+          example: 200.00
+
+        horas_estimadas:
+          type: number
+          example: 4
+
+        id_orcamento:
+          type: number
+          example: 1
+
+        id_servico:
+          type: number
+          example: 1
+
+        preco_hora:
+          type: number
+          example: 50.00
+
+        estado:
+          type: string
+          example: "pendente"
+
+        finalizado:
+          type: string
+          example: "2023-06-01T00:00:00Z"
+
+        id_prestador:
+          type: string
+          example: "abc123xyz"
+
+        enabled:
+          type: boolean
+          example: true
+
+        created_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+        update_at:
+          type: string
+          example: "2023-01-01T00:00:00Z"
+
+
+    # schema para criar uma nova prestação de serviço
+    CreatePrestacaoServico:
+      type: object
+      properties:
+        designacao:
+          type: string
+          example: "Limpeza de escritório"
+
+        subtotal:
+          type: number
+          example: 200.00
+
+        horas_estimadas:
+          type: number
+          example: 4
+
+        id_orcamento:
+          type: number
+          example: 1
+
+        id_servico:
+          type: number
+          example: 1
+
+        preco_hora:
+          type: number
+          example: 50.00
+
+        id_prestador:
+          type: string
+          example: "abc123xyz"
+
+        enabled:
+          type: boolean
+          example: true

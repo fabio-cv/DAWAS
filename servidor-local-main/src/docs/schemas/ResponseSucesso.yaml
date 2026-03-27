@@ -1,0 +1,20 @@
+# schema/ResponseSucesso.yaml
+
+components:
+  schemas:
+    # schema para resposta de sucesso
+    ResponseSucesso:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Requisição realizada com sucesso"
+
+        status:
+          type: boolean
+          example: true
+
+        data:
+          type: object
+          nullable: true
+          example: {}

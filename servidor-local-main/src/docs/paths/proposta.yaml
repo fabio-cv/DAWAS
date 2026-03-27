@@ -1,45 +1,45 @@
-# path/servico.yaml
+# path/proposta.yaml
 
 paths:
-  /servicos:
+  /propostas:
     get:
       tags:
-        - Serviços
-      summary: Listar todos os serviços
-      description: Retorna uma lista de todos os serviços disponíveis
+        - Propostas
+      summary: Listar todas as propostas
+      description: Retorna uma lista de todas as propostas disponíveis
       responses:
         "200":
-          description: Lista de serviços retornada com sucesso
+          description: Lista de propostas retornada com sucesso
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/servicos"
+                  $ref: "#/components/schemas/propostas"
         "404":
-          description: Nenhum serviço encontrado
+          description: Nenhuma proposta encontrada
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/create:
+  /propostas/create:
     post:
       tags:
-        - Serviços
-      summary: Criar um novo serviço
-      description: Adiciona um novo serviço ao sistema
+        - Propostas
+      summary: Criar uma nova proposta
+      description: Adiciona uma nova proposta ao sistema
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "201":
-          description: Serviço criado com sucesso
+          description: Proposta criada com sucesso
           content:
             application/json:
               schema:
@@ -53,60 +53,67 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/get-by-id/{id}:
+  /propostas/get-by-id/{id}:
     get:
       tags:
-        - Serviços
-      summary: Obter serviço por ID
-      description: Retorna os detalhes de um serviço específico usando seu ID
+        - Propostas
+      summary: Obter proposta por ID
+      description: Retorna os detalhes de uma proposta específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço
+          description: ID da proposta
           schema:
-            type: integer
-            example: 1
+            type: string
+          example: "abc123xyz"
       responses:
         "200":
-          description: Serviço encontrado com sucesso
+          description: Proposta encontrada com sucesso
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSucesso"
         "404":
-          description: Serviço não encontrado
+          description: Proposta não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "400":
+          description: Requisição inválida
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/update/{id}:
+  /propostas/update/{id}:
     put:
       tags:
-        - Serviços
-      summary: Atualizar um serviço existente
-      description: Atualiza os detalhes de um serviço específico usando seu ID
+        - Propostas
+      summary: Atualizar uma proposta existente
+      description: Atualiza os detalhes de uma proposta específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser atualizado
+          description: ID da proposta a ser atualizada
           schema:
-            type: integer
-            example: 1
+            type: string
+          example: "abc123xyz"
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
-          description: Serviço atualizado com sucesso
+          description: Proposta atualizada com sucesso
           content:
             application/json:
               schema:
@@ -120,30 +127,30 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Serviço não encontrado
+          description: Proposta não encontrada
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /servicos/delete/{id}:
+  /propostas/delete/{id}:
     delete:
       tags:
-        - Serviços
-      summary: Apagar um serviço
-      description: Apaga um serviço específico pelo ID
+        - Propostas
+      summary: Apagar uma proposta
+      description: Apaga uma proposta específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser apagado
+          description: ID da proposta a ser apagada
           schema:
-            type: integer
-            example: 1
+            type: string
+          example: "abc123xyz"
       responses:
         "200":
-          description: Serviço apagado com sucesso
+          description: Proposta apagada com sucesso
           content:
             application/json:
               schema:
@@ -157,7 +164,7 @@ paths:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Serviço não encontrado
+          description: Proposta não encontrada
           content:
             application/json:
               schema:
