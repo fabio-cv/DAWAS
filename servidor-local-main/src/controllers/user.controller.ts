@@ -2,6 +2,9 @@ import type { Request, Response } from "express";
 import type { UserDBType } from "../utils/types.js";
 import { UsersModel } from "../models/user.model.js";
 import { generateUUID } from "../utils/uuid.js";
+import { comparePassword } from "../utils/password.js";
+import jwt from "jsonwebtoken";
+
 
 export const UserController = {
     async create(req: Request, res: Response) {
@@ -101,6 +104,51 @@ export const UserController = {
                 data: updateUserResponse
             }
         )
+    },
+
+    async login(req: Request, res: Response){
+        const {email, password} = req.body
+
+        if(!email || !password){
+            return res.status(404).json({
+                status: "error",
+                message: "Credenciais inválidos",
+                data: null
+            })
+        }
+
+        const userData = await UsersModel.getByEmail(email as string)
+
+        if(!userData){
+            return res.status(404).json({
+                status: "error",
+                message: "não existe nehum utilizador com este email",
+                data: null
+            })
+        }
+
+        const isPasswordValid = await comparePassword(password, userData.password)
+
+        if(!isPasswordValid){
+            return res.status(401).json({
+                status: "error",
+                message: "Credenciais inválidos",
+                data: null
+            })
+        }
+
+        const payload = {
+            id: userData.id,
+            email: userData.email,
+            nome: userData.nome,
+            
+        }
+
+        const token  = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: "1h"})
+
+
+
+        
     },
 
     async delete(req: Request, res: Response) {
