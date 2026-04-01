@@ -1,6 +1,6 @@
 import { hash } from "node:crypto"
 import db from "./lib/db.js"
-import type { UserType } from "./utils/types.js"
+import type { UserDBType } from "./utils/types.js"
 import { generateUUID } from "./utils/uuid.js"
 import { hashPassword } from "./utils/password.js"
 import { formatDateToDDMMYYYY } from "./utils/date.js"
@@ -32,7 +32,7 @@ export async function getUserById(id: string) {
     }
 }
 
-export async function createUser(user: UserType) {
+export async function createUser(user: UserDBType) {
     try {
         const [rows] = await db.execute(
             `INSERT INTO tabela_utilizadores 
@@ -62,7 +62,7 @@ export async function createUser(user: UserType) {
 
 
 
-export async function updateUser(id: string, updatedUser: UserType) {
+export async function updateUser(id: string, updatedUser: UserDBType) {
     try {
         const query = `
         UPDATE tabela_utilizadores
