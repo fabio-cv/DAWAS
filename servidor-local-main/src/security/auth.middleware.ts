@@ -17,7 +17,5 @@ export function AuthMiddleware(req: Request, res: Response, next: NextFunction){
         
     } catch (error) {
         return res.status(401).json({message: "Token inválido"})
-        
-        
     }
 }
