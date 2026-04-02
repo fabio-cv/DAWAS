@@ -1,64 +1,87 @@
-# schema/proposta.yaml
-
 components:
   schemas:
-    # schema principal da proposta
-    propostas:
+    Proposta:
       type: object
       properties:
         id:
-          type: string
-          example: "abc123xyz"
-
-        id_prestacao:
-          type: number
+          type: integer
           example: 1
-
+        id_prestacao:
+          type: integer
+          example: 10
         preco_hora:
           type: number
-          example: 50.00
-
+          format: double
+          example: 25
         horas_estimadas:
-          type: number
-          example: 4
-
+          type: integer
+          example: 8
         estado:
           type: string
-          example: "pendente"
-
+          enum: [pendente, aceito, recusado]
+          example: pendente
         enabled:
           type: boolean
           example: true
-
         created_at:
           type: string
-          example: "2023-01-01T00:00:00Z"
-
-        update_at:
+          format: date-time
+        updated_at:
           type: string
-          example: "2023-01-01T00:00:00Z"
+          format: date-time
+      required: [id, id_prestacao, preco_hora, horas_estimadas, estado, enabled, created_at, updated_at]
 
-
-    # schema para criar uma nova proposta
     CreateProposta:
       type: object
       properties:
         id_prestacao:
-          type: number
-          example: 1
-
+          type: integer
+          example: 10
         preco_hora:
           type: number
-          example: 50.00
-
+          format: double
+          example: 25
         horas_estimadas:
-          type: number
-          example: 4
-
+          type: integer
+          example: 8
         estado:
           type: string
-          example: "pendente"
-
+          enum: [pendente, aceito, recusado]
+          example: pendente
         enabled:
           type: boolean
           example: true
+      required: [id_prestacao, preco_hora, horas_estimadas, estado, enabled]
+
+    PropostaAceitacaoResultado:
+      type: object
+      properties:
+        propostaId:
+          type: integer
+          example: 14
+        prestacaoServicoId:
+          type: integer
+          example: 9
+        orcamentoId:
+          type: integer
+          example: 4
+        propostaAceite:
+          type: string
+          enum: [aceito]
+          example: aceito
+        propostasRejeitadas:
+          type: integer
+          example: 2
+        estadoPrestacaoServico:
+          type: string
+          enum: [em_progresso]
+          example: em_progresso
+      required:
+        [
+          propostaId,
+          prestacaoServicoId,
+          orcamentoId,
+          propostaAceite,
+          propostasRejeitadas,
+          estadoPrestacaoServico,
+        ]

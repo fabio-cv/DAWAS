@@ -1,10 +1,26 @@
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { PrestacaoServicoDBType } from "../utils/types.js";
 
 export const PrestacaoServicoModel = {
     async create(newPrestacaoServico: PrestacaoServicoDBType) {
         try {
-            const query = `INSERT INTO tabela_prestacao_servico VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            const query = `
+                INSERT INTO tabela_prestacao_servico (
+                    id,
+                    designacao,
+                    subtotal,
+                    horas_estimadas,
+                    id_prestador,
+                    id_servico,
+                    preco_hora,
+                    estado,
+                    id_orcamento,
+                    enabled,
+                    created_at,
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
 
             const values = [
                 null,
@@ -21,9 +37,8 @@ export const PrestacaoServicoModel = {
                 new Date(),
             ];
 
-            const rows = await db.execute(query, values);
-
-            return rows;
+            const [result] = await db.execute<ResultSetHeader>(query, values);
+            return result;
         } catch (error) {
             console.log(error);
             return null;
@@ -33,10 +48,8 @@ export const PrestacaoServicoModel = {
     async getAll() {
         try {
             const query = `SELECT * FROM tabela_prestacao_servico`;
-
-            const [rows] = await db.execute(query);
-
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            const [rows] = await db.execute<RowDataPacket[]>(query);
+            return rows;
         } catch (error) {
             console.log(error);
             return null;
@@ -46,12 +59,8 @@ export const PrestacaoServicoModel = {
     async get(id: string) {
         try {
             const query = `SELECT * FROM tabela_prestacao_servico WHERE id = ?`;
-
-            const value = [id];
-
-            const rows = await db.execute(query, value);
-
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+            const [rows] = await db.execute<RowDataPacket[]>(query, [id]);
+            return rows[0] ?? null;
         } catch (error) {
             console.log(error);
             return null;
@@ -60,21 +69,21 @@ export const PrestacaoServicoModel = {
 
     async update(id: string, updatedPrestacaoServico: PrestacaoServicoDBType) {
         try {
-            const query = `UPDATE tabela_prestacao_servico
-                        SET
-                            designacao=?,
-                            subtotal=?,
-                            horas_estimadas=?,
-                            id_prestador=?,
-                            id_servico=?,
-                            preco_hora=?,
-                            estado=?,
-                            id_orcamento=?,
-                            enabled=?,
-                            updated_at=?
-                        WHERE
-                            id=?
-                        ;`;
+            const query = `
+                UPDATE tabela_prestacao_servico
+                SET
+                    designacao = ?,
+                    subtotal = ?,
+                    horas_estimadas = ?,
+                    id_prestador = ?,
+                    id_servico = ?,
+                    preco_hora = ?,
+                    estado = ?,
+                    id_orcamento = ?,
+                    enabled = ?,
+                    updated_at = ?
+                WHERE id = ?
+            `;
 
             const values = [
                 updatedPrestacaoServico.designacao,
@@ -90,9 +99,8 @@ export const PrestacaoServicoModel = {
                 id,
             ];
 
-            const rows = await db.execute(query, values);
-
-            return rows;
+            const [result] = await db.execute<ResultSetHeader>(query, values);
+            return result.affectedRows === 0 ? null : result;
         } catch (error) {
             console.log(error);
             return null;
@@ -102,15 +110,11 @@ export const PrestacaoServicoModel = {
     async delete(id: string) {
         try {
             const query = `DELETE FROM tabela_prestacao_servico WHERE id = ?`;
-
-            const value = [id];
-
-            const rows: any = await db.execute(query, value);
-
-            return rows[0]?.affectedRows === 0 ? null : rows;
+            const [result] = await db.execute<ResultSetHeader>(query, [id]);
+            return result.affectedRows === 0 ? null : result;
         } catch (error) {
             console.log(error);
             return null;
         }
-    }
+    },
 };

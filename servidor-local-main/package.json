@@ -5,7 +5,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --import tsx --test src/tests/run.test.ts",
     "docs": "swagger-jsdoc -o ./src/docs/swagger.json ./src/docs/swagger.ts"
   },
   "author": "Fábio Barros",

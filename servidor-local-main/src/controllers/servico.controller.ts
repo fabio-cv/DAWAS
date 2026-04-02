@@ -1,148 +1,85 @@
-import { ServicoModel } from "../models/servico.model.js";
-import type { ServicoDBType } from "../utils/types.js";
 import type { Request, Response } from "express";
+import { ServicoModel } from "../models/servico.model.js";
+import { sendError, sendSuccess } from "../utils/http.js";
+import type { ServicoDBType } from "../utils/types.js";
 
 export const ServicoController = {
     async CreateServico(req: Request, res: Response) {
         const newServico: ServicoDBType = req.body;
 
-        if (!newServico) {
-            return res.status(400).json({
-                status: "error",
-                message: "Dados de servico invalidos",
-                data: null,
-            });
+        if (!newServico || !newServico.nome) {
+            return sendError(res, 400, "Dados de servico invalidos");
         }
 
         const createServicoResponse = await ServicoModel.create(newServico);
 
         if (createServicoResponse === null) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao criar servico",
-                data: null,
-            });
+            return sendError(res, 400, "Erro ao criar servico");
         }
 
-        return res.status(201).json({
-            status: "success",
-            message: "Servico criado com sucesso",
-            data: createServicoResponse,
-        });
+        return sendSuccess(res, 201, "Servico criado com sucesso", createServicoResponse);
     },
 
     async getAll(req: Request, res: Response) {
         const getAllServicoResponse = await ServicoModel.getAll();
 
         if (!getAllServicoResponse) {
-            return res.status(500).json({
-                status: "error",
-                message: "Erro ao buscar servicos",
-                data: null,
-            });
+            return sendError(res, 500, "Erro ao buscar servicos");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Servicos buscados com sucesso",
-            data: getAllServicoResponse,
-        });
+        return sendSuccess(res, 200, "Servicos buscados com sucesso", getAllServicoResponse);
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID de servico nao fornecido",
-                data: null,
-            });
+            return sendError(res, 400, "ID de servico nao fornecido");
         }
 
-        const getServicoResponse = await ServicoModel.get(id as string);
+        const getServicoResponse = await ServicoModel.get(id);
 
         if (!getServicoResponse) {
-            return res.status(404).json({
-                status: "error",
-                message: "Servico nao encontrado",
-                data: null,
-            });
+            return sendError(res, 404, "Servico nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Servico encontrado com sucesso",
-            data: getServicoResponse,
-        });
+        return sendSuccess(res, 200, "Servico encontrado com sucesso", getServicoResponse);
     },
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-
         const updatedServico: ServicoDBType = req.body;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatorio",
-                data: null,
-            });
+            return sendError(res, 400, "ID obrigatorio");
         }
 
-        if (!updatedServico) {
-            return res.status(400).json({
-                status: "error",
-                message: "Dados de servico invalidos",
-                data: null,
-            });
+        if (!updatedServico || !updatedServico.nome) {
+            return sendError(res, 400, "Dados de servico invalidos");
         }
 
-        const updateServicoResponse = await ServicoModel.update(
-            id as string,
-            updatedServico,
-        );
+        const updateServicoResponse = await ServicoModel.update(id, updatedServico);
 
         if (!updateServicoResponse) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao atualizar servico",
-                data: null,
-            });
+            return sendError(res, 404, "Servico nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Servico atualizado com sucesso",
-            data: updateServicoResponse,
-        });
+        return sendSuccess(res, 200, "Servico atualizado com sucesso", updateServicoResponse);
     },
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatorio",
-                data: null,
-            });
+            return sendError(res, 400, "ID obrigatorio");
         }
 
-        const deleteServicoResponse = await ServicoModel.delete(id as string);
+        const deleteServicoResponse = await ServicoModel.delete(id);
 
         if (!deleteServicoResponse) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao apagar servico",
-                data: null,
-            });
+            return sendError(res, 404, "Servico nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Servico apagado com sucesso",
-            data: deleteServicoResponse,
-        });
+        return sendSuccess(res, 200, "Servico apagado com sucesso", deleteServicoResponse);
     },
 };

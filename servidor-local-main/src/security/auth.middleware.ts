@@ -1,23 +1,31 @@
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { sendError } from "../utils/http.js";
 
-export function AuthMiddleware(req: Request, res: Response, next: NextFunction){
-    const authHeader = req.headers.authorization
+export function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers.authorization;
 
-    if(!authHeader){
-        return res.status(401).json({message: "Utilizador não autenticado"})
+    if (!authHeader?.startsWith("Bearer ")) {
+        return sendError(res, 401, "Utilizador nao autenticado");
     }
 
-    const token = authHeader.split(" ")[1]
+    const token = authHeader.split(" ")[1];
 
     try {
-        const decodeToken = jwt.verify(token as string, process.env.JWT_SECRET as string)
+        const decodedToken = jwt.verify(token as string, process.env.JWT_SECRET as string) as {
+            id: string;
+            email: string;
+            nome: string;
+        };
 
-        next()
-        
+        req.user = {
+            id: decodedToken.id,
+            email: decodedToken.email,
+            nome: decodedToken.nome,
+        };
+
+        return next();
     } catch (error) {
-        return res.status(401).json({message: "Token inválido"})
-        
-        
+        return sendError(res, 401, "Token invalido ou expirado");
     }
 }

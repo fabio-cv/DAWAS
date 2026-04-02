@@ -1,64 +1,51 @@
 import type { Request, Response } from "express";
-import type { UserDBType } from "../utils/types.js";
-import { UsersModel } from "../models/user.model.js";
-import { generateUUID } from "../utils/uuid.js";
-import { comparePassword } from "../utils/password.js";
 import jwt from "jsonwebtoken";
-
+import { UsersModel } from "../models/user.model.js";
+import { comparePassword } from "../utils/password.js";
+import { sendError, sendSuccess } from "../utils/http.js";
+import type { UserDBType } from "../utils/types.js";
 
 export const UserController = {
     async create(req: Request, res: Response) {
         const user: UserDBType = req.body;
 
-        if (!user) {
-            res.status(400).json({
-                status: "error",
-                message: "Dados de utilizador invalidos",
-                data: null,
-            });
+        if (!user || !user.email || !user.password) {
+            return sendError(res, 400, "Dados de utilizador invalidos");
         }
-
-        console.log(user);
 
         const createUserResponse = await UsersModel.create(user);
 
-        res.status(201).json({
-            status: "successo",
-            message: "Utilizador criado com sucesso",
-            data: createUserResponse
-        });
-    },
+        if (!createUserResponse) {
+            return sendError(res, 400, "Erro ao criar utilizador");
+        }
 
+        return sendSuccess(res, 201, "Utilizador criado com sucesso", createUserResponse);
+    },
 
     async getAll(req: Request, res: Response) {
         const getUsersResponse = await UsersModel.getAll();
 
-        res.json(getUsersResponse);
+        if (!getUsersResponse) {
+            return sendError(res, 500, "Erro ao buscar utilizadores");
+        }
+
+        return sendSuccess(res, 200, "Utilizadores buscados com sucesso", getUsersResponse);
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
-        const getUserResponse = await UsersModel.get(id as string);
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID do utilizador é obrigatório",
-                data: null
-            });
-
+            return sendError(res, 400, "ID do utilizador e obrigatorio");
         }
+
+        const getUserResponse = await UsersModel.get(id);
 
         if (!getUserResponse) {
-            return res.status(404).json({
-                status: "error",
-                message: "Utilizador não encontrado",
-                data: null
-            });
-
+            return sendError(res, 404, "Utilizador nao encontrado");
         }
 
-        res.json(getUserResponse);
+        return sendSuccess(res, 200, "Utilizador encontrado com sucesso", getUserResponse);
     },
 
     async update(req: Request, res: Response) {
@@ -66,122 +53,68 @@ export const UserController = {
         const updatedUser: UserDBType = req.body;
 
         if (!id) {
-            return res.status(400).json(
-                {
-                    status: "error",
-                    message: "ID é obrigatório",
-                    data: null
-                }
-            )
+            return sendError(res, 400, "ID e obrigatorio");
         }
 
-        if (!updatedUser) {
-            return res.status(400).json(
-                {
-                    status: "error",
-                    message: "Dados de utilizador inválidos",
-                    data: null
-                }
-            )
+        if (!updatedUser || !updatedUser.email) {
+            return sendError(res, 400, "Dados de utilizador invalidos");
         }
 
-        const updateUserResponse = await UsersModel.update(generateUUID(), updatedUser);
+        const updateUserResponse = await UsersModel.update(id, updatedUser);
 
         if (!updateUserResponse) {
-            return res.status(400).json(
-                {
-                    status: "error",
-                    message: "Erro ao atualizar utilizador",
-                    data: null
-                }
-            )
+            return sendError(res, 404, "Utilizador nao encontrado");
         }
 
-        return res.status(200).json(
-            {
-                status: "success",
-                message: "Utilizador atualizado com sucesso",
-                data: updateUserResponse
-            }
-        )
+        return sendSuccess(res, 200, "Utilizador atualizado com sucesso", updateUserResponse);
     },
 
-    async login(req: Request, res: Response){
-        const {email, password} = req.body
+    async login(req: Request, res: Response) {
+        const { email, password } = req.body;
 
-        if(!email || !password){
-            return res.status(404).json({
-                status: "error",
-                message: "Credenciais inválidos",
-                data: null
-            })
+        if (!email || !password) {
+            return sendError(res, 400, "Credenciais invalidas");
         }
 
-        const userData = await UsersModel.getByEmail(email as string)
+        const userData = await UsersModel.getByEmail(email as string);
 
-        if(!userData){
-            return res.status(404).json({
-                status: "error",
-                message: "não existe nehum utilizador com este email",
-                data: null
-            })
+        if (!userData) {
+            return sendError(res, 404, "Nao existe nenhum utilizador com este email");
         }
 
-        const isPasswordValid = await comparePassword(password, userData.password)
+        const isPasswordValid = await comparePassword(password, userData.password);
 
-        if(!isPasswordValid){
-            return res.status(401).json({
-                status: "error",
-                message: "Credenciais inválidos",
-                data: null
-            })
+        if (!isPasswordValid) {
+            return sendError(res, 401, "Credenciais invalidas");
         }
 
         const payload = {
             id: userData.id,
             email: userData.email,
             nome: userData.nome,
-            
-        }
+        };
 
-        const token  = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: "1h"})
+        const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
 
-        return res.status(200).json({
-            status: "success",
-            message: "Login realizado com sucesso",
-            data: {
-                token,
-                user: payload
-            }
-        })
-
+        return sendSuccess(res, 200, "Login realizado com sucesso", {
+            token,
+            user: payload,
+        });
     },
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatorio",
-                data: null,
-            });
+            return sendError(res, 400, "ID obrigatorio");
         }
 
-        const deleteUserResponse = await UsersModel.delete(id as string);
+        const deleteUserResponse = await UsersModel.delete(id);
 
         if (!deleteUserResponse) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao apagar servico",
-                data: null,
-            });
+            return sendError(res, 404, "Utilizador nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Servico apagado com sucesso",
-            data: deleteUserResponse,
-        });
-    }
-}
+        return sendSuccess(res, 200, "Utilizador apagado com sucesso", deleteUserResponse);
+    },
+};

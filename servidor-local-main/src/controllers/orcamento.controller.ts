@@ -1,80 +1,49 @@
 import type { Request, Response } from "express";
 import { OrcamentoModel } from "../models/orcamento.model.js";
+import { sendError, sendSuccess } from "../utils/http.js";
 import type { orcamentoDBType } from "../utils/types.js";
 
 export const OrcamentoController = {
     async create(req: Request, res: Response) {
         const newOrcamento: orcamentoDBType = req.body;
 
-        if (!newOrcamento) {
-            return res.status(400).json({
-                status: "error",
-                message: "Dados de orcamento invalidos",
-                data: null
-            });
+        if (!newOrcamento || !newOrcamento.id_utilizador) {
+            return sendError(res, 400, "Dados de orcamento invalidos");
         }
 
         const createOrcamentoResponse = await OrcamentoModel.create(newOrcamento);
 
         if (createOrcamentoResponse === null) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao criar orcamento",
-                data: null
-            });
+            return sendError(res, 400, "Erro ao criar orcamento");
         }
 
-        return res.status(201).json({
-            status: "success",
-            message: "Orcamento criado com sucesso",
-            data: createOrcamentoResponse
-        });
+        return sendSuccess(res, 201, "Orcamento criado com sucesso", createOrcamentoResponse);
     },
 
     async getAll(req: Request, res: Response) {
         const getAllOrcamentoResponse = await OrcamentoModel.getAll();
 
         if (!getAllOrcamentoResponse) {
-            return res.status(500).json({
-                status: "error",
-                message: "Erro ao buscar orcamentos",
-                data: null
-            });
+            return sendError(res, 500, "Erro ao buscar orcamentos");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Orcamentos buscados com sucesso",
-            data: getAllOrcamentoResponse
-        });
+        return sendSuccess(res, 200, "Orcamentos buscados com sucesso", getAllOrcamentoResponse);
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID de orcamento nao fornecido",
-                data: null
-            });
+            return sendError(res, 400, "ID de orcamento nao fornecido");
         }
 
-        const getOrcamentoResponse = await OrcamentoModel.get(id as string);
+        const getOrcamentoResponse = await OrcamentoModel.get(id);
 
         if (!getOrcamentoResponse) {
-            return res.status(404).json({
-                status: "error",
-                message: "Orcamento nao encontrado",
-                data: null
-            });
+            return sendError(res, 404, "Orcamento nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Orcamento encontrado com sucesso",
-            data: getOrcamentoResponse
-        });
+        return sendSuccess(res, 200, "Orcamento encontrado com sucesso", getOrcamentoResponse);
     },
 
     async update(req: Request, res: Response) {
@@ -82,63 +51,51 @@ export const OrcamentoController = {
         const updatedOrcamento: orcamentoDBType = req.body;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatorio",
-                data: null,
-            });
+            return sendError(res, 400, "ID obrigatorio");
         }
 
-        if (!updatedOrcamento) {
-            return res.status(400).json({
-                status: "error",
-                message: "Dados de orcamento invalidos",
-                data: null,
-            });
+        if (!updatedOrcamento || !updatedOrcamento.id_utilizador) {
+            return sendError(res, 400, "Dados de orcamento invalidos");
         }
 
-        const updateOrcamentoResponse = await OrcamentoModel.update(id as string, updatedOrcamento);
+        const updateOrcamentoResponse = await OrcamentoModel.update(id, updatedOrcamento);
 
         if (!updateOrcamentoResponse) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao atualizar orcamento",
-                data: null,
-            });
+            return sendError(res, 404, "Orcamento nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Orcamento atualizado com sucesso",
-            data: updateOrcamentoResponse,
-        });
+        return sendSuccess(res, 200, "Orcamento atualizado com sucesso", updateOrcamentoResponse);
+    },
+
+    async calculate(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return sendError(res, 400, "ID obrigatorio");
+        }
+
+        const calculateResponse = await OrcamentoModel.calculateTotal(id);
+
+        if (!calculateResponse) {
+            return sendError(res, 404, "Orcamento nao encontrado");
+        }
+
+        return sendSuccess(res, 200, "Total do orcamento calculado com sucesso", calculateResponse);
     },
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatorio",
-                data: null,
-            });
+            return sendError(res, 400, "ID obrigatorio");
         }
 
-        const deleteOrcamentoResponse = await OrcamentoModel.delete(id as string);
+        const deleteOrcamentoResponse = await OrcamentoModel.delete(id);
 
         if (!deleteOrcamentoResponse) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao apagar orcamento",
-                data: null,
-            });
+            return sendError(res, 404, "Orcamento nao encontrado");
         }
 
-        return res.status(200).json({
-            status: "success",
-            message: "Orcamento apagado com sucesso",
-            data: deleteOrcamentoResponse,
-        });
-    }
+        return sendSuccess(res, 200, "Orcamento apagado com sucesso", deleteOrcamentoResponse);
+    },
 };

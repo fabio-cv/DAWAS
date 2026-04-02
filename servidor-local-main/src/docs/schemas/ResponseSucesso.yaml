@@ -1,20 +1,23 @@
-# schema/ResponseSucesso.yaml
-
 components:
   schemas:
-    # schema para resposta de sucesso
     ResponseSucesso:
       type: object
       properties:
+        status:
+          type: string
+          enum: [success]
+          example: success
         message:
           type: string
-          example: "Requisição realizada com sucesso"
-
-        status:
-          type: boolean
-          example: true
-
+          example: Requisicao realizada com sucesso
         data:
-          type: object
           nullable: true
-          example: {}
+          oneOf:
+            - type: object
+            - type: array
+              items:
+                type: object
+            - type: string
+            - type: number
+            - type: boolean
+      required: [status, message, data]

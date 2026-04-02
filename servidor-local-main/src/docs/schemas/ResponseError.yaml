@@ -1,19 +1,23 @@
-# schema/ResponseError.yaml
-
 components:
   schemas:
-    # schema para resposta de erro
     ResponseError:
       type: object
       properties:
+        status:
+          type: string
+          enum: [error]
+          example: error
         message:
           type: string
-          example: "Erro ao realizar requisição"
-
-        status:
-          type: boolean
-          example: false
-
+          example: Erro ao realizar requisicao
         data:
-          type: object
-          properties: null
+          nullable: true
+          oneOf:
+            - type: object
+            - type: array
+              items:
+                type: object
+            - type: string
+            - type: number
+            - type: boolean
+      required: [status, message, data]
