@@ -59,6 +59,34 @@ export const UsersModel = {
         }
     },
 
+    async getById(id: string): Promise<UserDBType | null>{
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM tabela_utilizadores
+                WHERE tabela_utilizadores.id = ?`, [id]
+            )
+            if(Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserDBType : null
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+
+    async getByEmail(email: string): Promise<UserDBType | null>{
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM tabela_utilizadores
+                WHERE tabela_utilizadores.email = ?`, [email]
+            )
+            if(Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserDBType : null
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+
 
     async update(id: string, updatedUser: UserDBType) {
         try {
@@ -97,6 +125,26 @@ export const UsersModel = {
         } catch (err) {
             console.log(err)
             return null
+        }
+    },
+
+    async updatePassword(id: string, newPwd: string){
+        try{
+            const query = `
+            UPDATE tabela_utilizadores
+            SET
+                password=?
+            WHERE id=?
+            ` 
+            const values = [newPwd, id]
+
+            const rows = await db.execute(query, values)
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+
+        }catch(error){
+            console.log(error);
+            return null
+            
         }
     },
 

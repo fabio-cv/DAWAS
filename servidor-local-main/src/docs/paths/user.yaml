@@ -167,3 +167,40 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
+  /users/login:
+    post:
+      tags:
+        - Usuários
+      summary: Login de um usuário
+      description: Faz login de um usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                $ref: "#/components/schemas/ResponseSucesso"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "400":
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+      

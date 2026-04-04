@@ -2,6 +2,9 @@ import type { Request, Response } from "express";
 import type { UserDBType } from "../utils/types.js";
 import { UsersModel } from "../models/user.model.js";
 import { generateUUID } from "../utils/uuid.js";
+import { comparePassword, hashPassword } from "../utils/password.js";
+import jwt from "jsonwebtoken";
+
 
 export const UserController = {
     async create(req: Request, res: Response) {
@@ -102,6 +105,107 @@ export const UserController = {
             }
         )
     },
+
+    async login(req: Request, res: Response){
+        const {email, password} = req.body
+
+        if(!email || !password){
+            return res.status(404).json({
+                status: "error",
+                message: "Credenciais inválidos",
+                data: null
+            })
+        }
+
+        const userData = await UsersModel.getByEmail(email as string)
+
+        if(!userData){
+            return res.status(404).json({
+                status: "error",
+                message: "não existe nehum utilizador com este email",
+                data: null
+            })
+        }
+
+        const isPasswordValid = await comparePassword(password, userData.password)
+
+        if(!isPasswordValid){
+            return res.status(401).json({
+                status: "error",
+                message: "Credenciais inválidos",
+                data: null
+            })
+        }
+
+        const payload = {
+            id: userData.id,
+            email: userData.email,
+            nome: userData.nome,
+            
+        }
+
+        const token  = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: "1h"})
+
+        return res.status(200).json({
+            status: "success",
+            message: "Login realizado com sucesso",
+            data: {
+                token,
+                user: payload
+            }
+        })
+
+    },
+
+    async updatePassword(req: Request, res: Response){
+        const {id} = req.params
+        const {password, newPassword} = req.body
+        
+        if(!password || !newPassword){
+            return res.status(400).json({
+                status: "error",
+                message: "Credencias inválidas",
+                data: null
+            })
+        }
+
+        const userData = await UsersModel.getById(id as string)
+
+        if(!userData){
+            return res.status(404).json({
+                status: "error",
+                message: "Utilizador não encontrado",
+                data: null
+            })
+        }
+
+        const isPwdValid = await comparePassword(password, userData!.password)
+
+        if(!isPwdValid){
+            return res.status(400).json({
+                status: "error",
+                message: "Credenciais inv;alidas"
+            })
+        }
+
+        const updatePasswordResponse = await UsersModel.updatePassword(userData.id, await hashPassword(newPassword))
+
+        if(!updatePasswordResponse){
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao atualizar password",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "sucess",
+            message: "Password atualizado com sucesso",
+            data: updatePasswordResponse
+        })
+
+    },
+
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;

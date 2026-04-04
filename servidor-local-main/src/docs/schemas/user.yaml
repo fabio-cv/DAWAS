@@ -1,5 +1,7 @@
 # schema/user.yaml
 
+
+
 components:
   schemas: 
     # schema principal de usuário
@@ -13,6 +15,10 @@ components:
         nome: 
           type: string
           example: "Fábio Barros"
+        
+        data_nascimento:
+          type: string
+          example: "1990-01-01"
 
         numero_identificacao:
           type: string
@@ -20,7 +26,7 @@ components:
 
         email:
           type: string
-          example: "[EMAIL_ADDRESS]"
+          example: "teste123@gmail.com"
 
         telefone:
           type: string
@@ -33,6 +39,10 @@ components:
         localidade:
           type: string
           example: "Praia"
+
+        password:
+          type: string
+          example: "teste123"
 
         enabled:
           type: boolean
@@ -54,13 +64,17 @@ components:
           type: string
           example: "Fábio Barros"
 
+        data_nascimento:
+          type: string
+          example: "12-06-1950"
+
         numero_identificacao:
           type: string
           example: "MUHR"
 
         email:
           type: string
-          example: "[EMAIL_ADDRESS]"
+          example: "teste@gmail.com"
 
         telefone:
           type: string
@@ -81,6 +95,17 @@ components:
         enabled:
           type: boolean
           example: true
+    # schema para login
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+
+        password:
+          type: string
+          example: "senha123"
 
     # # schema generico para resposta de sucesso
     # RespostaSucesso:

@@ -20,7 +20,7 @@ import {
   selecionarServicos,
 } from "./orcamento.js";
 import { createUser, getUserById, getUsers, updateUser } from "./users.js";
-import type { ServicoDBType, UserType } from "./utils/types.js";
+import type { ServicoDBType, UserDBType } from "./utils/types.js";
 import { generateUUID } from "./utils/uuid.js";
 
 const app = express();
@@ -197,7 +197,7 @@ app.get("/get-user-by-id", async (req: Request, res: Response) => {
 
 //rota para criar um novo utilizador em db
 app.post("/create-user", async (req: Request, res: Response) => {
-  const user: UserType = req.body;
+  const user: UserDBType = req.body;
 
   if (!user) {
     res.status(400).json({
@@ -373,7 +373,7 @@ app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
 //rota para update user
 app.put("/update-user-by-id/:id", async (req: Request, res: Response) => {
   const {id} = req.params;
-  const updatedUser: UserType = req.body;
+  const updatedUser: UserDBType = req.body;
 
   if(!id){
     return res.status(400).json(

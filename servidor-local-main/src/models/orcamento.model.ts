@@ -68,6 +68,31 @@ export const OrcamentoModel = {
         }
     },
 
+
+
+    async getTotalOrcamento(id: number){
+
+        try {
+            const query = `
+                SELECT 
+                ps.horas_estimadas,
+                pr.taxa_urgencia,
+                pr.minimo_desconto,
+                pr.percentagem_desconto,
+            FROM tabela_pestacao_servico ps
+            JOIN tabela_prestadores pr on pr.id = ps.id_prestador
+            WHERE ps.id_orcamento = ? AND ps.enabled = true 
+            `
+            const [rows] = await db.execute(query, id)
+            
+        } catch (error) {
+            console.log(error);
+            return null
+            
+        }
+
+    },
+
     async delete(id: string) {
         try {
             const query = `DELETE FROM tabela_orcamento WHERE id = ?`

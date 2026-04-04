@@ -17,7 +17,25 @@ const options: swaggerJsdoc.Options = {
             }
         ],
 
-        tags: [
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                },
+            },
+        },
+        // security: [
+        //     {
+        //         bearerAuth: []
+        //     }
+        // ],
+        
+       
+    },
+
+     tags: [
             {
                 name: "Usuários",
             },
@@ -37,7 +55,6 @@ const options: swaggerJsdoc.Options = {
                 name: "Prestações de Serviço",
             },
         ],
-    },
 
     apis: [
         path.join(process.cwd(), "./src/docs/schemas/*.yaml"),
