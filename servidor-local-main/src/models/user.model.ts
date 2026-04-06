@@ -1,4 +1,3 @@
-import { get } from "node:http";
 import db from "../lib/db.js";
 import { formatDateToDDMMYYYY } from "../utils/date.js";
 import { hashPassword } from "../utils/password.js";
@@ -58,7 +57,7 @@ export const UsersModel = {
             return null;
         }
     },
-
+    //Ex-1
     async getById(id: string): Promise<UserDBType | null>{
         try {
             const [rows] = await db.execute(
@@ -128,6 +127,7 @@ export const UsersModel = {
         }
     },
 
+    //Ex-1
     async updatePassword(id: string, newPwd: string){
         try{
             const query = `

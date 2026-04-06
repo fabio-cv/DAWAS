@@ -156,7 +156,7 @@ export const UserController = {
         })
 
     },
-
+    //Ex-1
     async updatePassword(req: Request, res: Response){
         const {id} = req.params
         const {password, newPassword} = req.body

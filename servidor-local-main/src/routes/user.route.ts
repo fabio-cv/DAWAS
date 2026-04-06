@@ -16,12 +16,12 @@ const UsersRouter = {
 const router = Router()
 
 router.get(UsersRouter.getAll, UserController.getAll)
-router.get(UsersRouter.getById, UserController.get)
+router.get(UsersRouter.getById, AuthMiddleware, UserController.get)
 router.post(UsersRouter.create, UserController.create)
 router.put(UsersRouter.update, UserController.update)
 router.delete(UsersRouter.delete, UserController.delete) 
 router.post(UsersRouter.login, UserController.login)
-router.put(UsersRouter.update_pwd, UserController.updatePassword)
+router.put(UsersRouter.update_pwd, AuthMiddleware, UserController.updatePassword)
 
 
 export { router };

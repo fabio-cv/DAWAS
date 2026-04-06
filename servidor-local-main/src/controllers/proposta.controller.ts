@@ -113,6 +113,34 @@ export const PropostaController = {
             data: updatePropostaResponse,
         });
     },
+    //Ex-3
+    async aceitar(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID de proposta nao fornecido",
+                data: null,
+            });
+        }
+
+        const aceitarResponse = await PropostaModel.aceitar(id as string);
+
+        if (!aceitarResponse) {
+            return res.status(404).json({
+                status: "error",
+                message: "Proposta nao encontrada ou ja nao esta disponivel",
+                data: null,
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Proposta aceite com sucesso. Propostas concorrentes rejeitadas.",
+            data: aceitarResponse,
+        });
+    },
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;

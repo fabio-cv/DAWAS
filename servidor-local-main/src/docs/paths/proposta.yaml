@@ -170,3 +170,63 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
+
+  /propostas/aceitar/{id}:
+    put:
+      tags:
+        - Propostas
+      summary: Aceitar uma proposta (cascata)
+      description: >
+        Fluxo de negociação. Marca a proposta indicada como "aceito",
+        atualiza o estado da prestação de serviço correspondente para
+        "em_progresso" e rejeita automaticamente todas as outras propostas
+        concorrentes para a mesma prestação de serviço.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da proposta a aceitar
+          schema:
+            type: integer
+          example: 3
+      responses:
+        "200":
+          description: Proposta aceite com sucesso e concorrentes rejeitadas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Proposta aceite com sucesso. Propostas concorrentes rejeitadas."
+                  data:
+                    type: object
+                    properties:
+                      idProposta:
+                        type: string
+                        example: "3"
+                      idPrestacaoServico:
+                        type: integer
+                        example: 5
+                      estado:
+                        type: string
+                        example: "aceito"
+        "400":
+          description: ID não fornecido
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Proposta não encontrada ou indisponível
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
