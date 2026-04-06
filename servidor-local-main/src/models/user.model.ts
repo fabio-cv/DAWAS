@@ -1,4 +1,3 @@
-import { get } from "node:http";
 import db from "../lib/db.js";
 import { formatDateToDDMMYYYY } from "../utils/date.js";
 import { hashPassword } from "../utils/password.js";

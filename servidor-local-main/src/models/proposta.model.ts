@@ -5,11 +5,12 @@ import type { propostaDBType } from "../utils/types.js";
 export const PropostaModel = {
     async create(newProposta: propostaDBType) {
         try {
-            const query = `INSERT INTO tabela_proposta VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+            const query = `INSERT INTO tabela_proposta VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
             const values = [
                 null,
                 newProposta.id_prestacao,
+                newProposta.id_prestador,
                 newProposta.preco_hora,
                 newProposta.horas_estimadas,
                 newProposta.estado,
@@ -60,6 +61,7 @@ export const PropostaModel = {
             const query = `UPDATE tabela_proposta
                         SET
                             id_prestacao_servico=?,
+                            id_prestador=?,
                             preco_hora=?,
                             horas_estimadas=?,
                             estado=?,
@@ -71,6 +73,7 @@ export const PropostaModel = {
 
             const values = [
                 updatedProposta.id_prestacao,
+                updatedProposta.id_prestador,
                 updatedProposta.preco_hora,
                 updatedProposta.horas_estimadas,
                 updatedProposta.estado,

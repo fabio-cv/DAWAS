@@ -67,6 +67,7 @@ export interface orcamentoDBType {
 export interface propostaDBType{
     id: string,
     id_prestacao: number,
+    id_prestador: string,
     preco_hora: number,
     horas_estimadas: number,
     estado: string,
