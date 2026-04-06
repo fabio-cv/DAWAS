@@ -114,6 +114,34 @@ export const OrcamentoController = {
         });
     },
 
+    async calcularTotal(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID de orcamento nao fornecido",
+                data: null,
+            });
+        }
+
+        const total = await OrcamentoModel.calcularTotal(id as string);
+
+        if (total === null) {
+            return res.status(404).json({
+                status: "error",
+                message: "Orcamento nao encontrado ou sem prestacoes de servico com proposta aceite",
+                data: null,
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Total do orcamento calculado com sucesso",
+            data: { total },
+        });
+    },
+
     async delete(req: Request, res: Response) {
         const { id } = req.params;
 
