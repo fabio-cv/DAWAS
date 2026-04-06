@@ -7,6 +7,7 @@ const PropostaRouter = {
     getAll: "/",
     update: "/update/:id",
     delete: "/delete/:id",
+    aceitar: "/aceitar/:id",
 };
 
 const router = Router();
@@ -15,6 +16,7 @@ router.get(PropostaRouter.getAll, PropostaController.getAll);
 router.get(PropostaRouter.getById, PropostaController.get);
 router.post(PropostaRouter.create, PropostaController.create);
 router.put(PropostaRouter.update, PropostaController.update);
+router.put(PropostaRouter.aceitar, PropostaController.aceitar);
 router.delete(PropostaRouter.delete, PropostaController.delete);
 
 export { router };
