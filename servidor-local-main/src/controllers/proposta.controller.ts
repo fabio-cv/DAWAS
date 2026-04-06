@@ -113,7 +113,7 @@ export const PropostaController = {
             data: updatePropostaResponse,
         });
     },
-
+    //Ex-3
     async aceitar(req: Request, res: Response) {
         const { id } = req.params;
 

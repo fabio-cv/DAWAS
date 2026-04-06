@@ -113,7 +113,7 @@ export const OrcamentoController = {
             data: updateOrcamentoResponse,
         });
     },
-
+    //Ex-2
     async calcularTotal(req: Request, res: Response) {
         const { id } = req.params;
 
