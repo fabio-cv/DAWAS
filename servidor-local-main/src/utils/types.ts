@@ -107,3 +107,16 @@ export interface PrestacaoServicoDBType{
     update_at: string
 
 } 
+
+export enum EstadoProposta{
+    PENDENTE =  "pendente",
+    ACEITE = "aceite",
+    CANCELADO = "cancelado"
+}
+
+export enum EstadoPrestacaoServico{
+    PENDENTE = "pendente",
+    FINALIZADO = "finalizado",
+    EM_PROGRESSO = "em_progresso",
+    CANCELADO = "cancelado"
+}

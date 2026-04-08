@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import { OrcamentoModel } from "../models/orcamento.model.js";
-import type { orcamentoDBType } from "../utils/types.js";
+import { EstadoProposta, type orcamentoDBType, type propostaDBType } from "../utils/types.js";
+import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
+import { PropostaModel } from "../models/proposta.model.js";
+import { PrestadorModel } from "../models/prestador.model.js";
+import { sub } from "date-fns/fp";
 
 export const OrcamentoController = {
     async create(req: Request, res: Response) {
@@ -120,7 +124,7 @@ export const OrcamentoController = {
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "ID de orcamento nao fornecido",
+                message: "ID obrigatório",
                 data: null,
             });
         }
@@ -141,6 +145,96 @@ export const OrcamentoController = {
             data: { total },
         });
     },
+
+    //calcular budget
+    async calcularBudget(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            });
+        }
+    
+
+    const prestacaoServico = await PrestacaoServicoModel.getByIdOrcamento( id as string)
+
+    if (!prestacaoServico) {
+        return res.status(404).json({
+            status: "error",
+            message: "Prestacao de servico nao encontrada",
+            data: null
+        });
+    }
+
+    // FETCH ALL PROPOSTAL
+    const proposals = await PropostaModel.getByPrestacaoServico(String(prestacaoServico.id))
+
+    if(!proposals){
+        return res.status(404).json({
+            status: "error",
+            message: "Proposta não encontrada",
+            data: null
+        })
+    }
+
+    const acceptedProposal: propostaDBType | undefined = proposals.find((proposal)=>proposal.estado === EstadoProposta.ACEITE)
+
+    if(!acceptedProposal){
+        return res.status(404).json({
+            status: "error",
+            message: "Ainda nenhuma proposta aceite",
+            data: null
+        })
+    }
+
+    const precoHora = acceptedProposal.preco_hora
+    const horaEstimada = acceptedProposal.horas_estimadas
+
+    const prestador =  await PrestadorModel.get(acceptedProposal.id_prestador)
+
+    if(!prestador){
+        return res.status(404).json({
+            status: "error",
+            message: "Prestador não encontrado",
+            data: null
+        })
+    }
+
+    const urgencyTax = prestador.taxaUrgencia
+    const minimumDiscount = prestador.minimoDesconto
+    const discountPercentage = prestador.percentagemDesconto
+
+    let subtotal = precoHora * horaEstimada
+
+    if(subtotal > minimumDiscount){
+        subtotal = subtotal * (1 - discountPercentage)
+    }
+
+    if(prestacaoServico.urgente){
+        subtotal = subtotal * (1 + urgencyTax)
+    }
+
+    const updatedOrcamentoResponse = await OrcamentoModel.updateBudget(id as string, subtotal)
+
+    if(!updatedOrcamentoResponse){
+        return res.status(400).json({
+            status:"error",
+            message: "Erro ao calcular orcamento",
+            data: null
+        })
+    }
+
+    return res.status(200).json({
+        status: "sucess",
+        message: "Orcamento calculado e atualizado com sucesso",
+        data: updatedOrcamentoResponse
+    })
+    },
+
+
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
