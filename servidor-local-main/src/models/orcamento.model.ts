@@ -127,6 +127,8 @@ export const OrcamentoModel = {
         }
     },
 
+    
+
     async delete(id: string) {
         try {
             const query = `DELETE FROM tabela_orcamento WHERE id = ?`
