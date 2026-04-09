@@ -5,7 +5,7 @@ import type { PrestacaoServicoDBType } from "../utils/types.js";
 export const PrestacaoServicoModel = {
     async create(newPrestacaoServico: PrestacaoServicoDBType) {
         try {
-            const query = `INSERT INTO tabela_prestacao_servico VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            const query = `INSERT INTO tabela_prestacao_servico VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
             const values = [
                 null,
@@ -17,6 +17,7 @@ export const PrestacaoServicoModel = {
                 newPrestacaoServico.preco_hora,
                 newPrestacaoServico.estado,
                 newPrestacaoServico.id_orcamento,
+                newPrestacaoServico.id_utilizador,
                 newPrestacaoServico.enabled,
                 new Date(),
                 new Date(),

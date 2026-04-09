@@ -90,6 +90,7 @@ export interface PrestacaoServicoDBType{
     subtotal: number,
     horas_estimadas: number,
     id_orcamento: number,
+    id_utilizador: string,
     id_servico: number,
     preco_hora: number,
     estado: string,
