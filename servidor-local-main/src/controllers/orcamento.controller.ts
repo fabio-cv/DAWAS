@@ -4,7 +4,7 @@ import { EstadoProposta, type orcamentoDBType, type propostaDBType } from "../ut
 import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
 import { PropostaModel } from "../models/proposta.model.js";
 import { PrestadorModel } from "../models/prestador.model.js";
-import { sub } from "date-fns/fp";
+
 
 export const OrcamentoController = {
     async create(req: Request, res: Response) {
@@ -203,9 +203,9 @@ export const OrcamentoController = {
         })
     }
 
-    const urgencyTax = prestador.taxaUrgencia
-    const minimumDiscount = prestador.minimoDesconto
-    const discountPercentage = prestador.percentagemDesconto
+    const urgencyTax = prestador.taxa_urgencia
+    const minimumDiscount = prestador.minimo_desconto
+    const discountPercentage = prestador.percentagem_desconto
 
     let subtotal = precoHora * horaEstimada
 

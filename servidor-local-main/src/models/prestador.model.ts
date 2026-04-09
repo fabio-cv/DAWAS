@@ -13,7 +13,6 @@ export const PrestadorModel = {
                 newPrestador.taxa_urgencia,
                 newPrestador.minimo_desconto,
                 newPrestador.percentagem_desconto,
-                newPrestador.disponivel,
                 newPrestador.enabled,
                 new Date(),
                 new Date()
@@ -41,15 +40,16 @@ export const PrestadorModel = {
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<prestadorDBType | null> {
         try {
-            const query = `SELECT * FROM tabela_prestadores WHERE id = ?`;
 
-            const value = [id];
+            const [rows] = await db.execute(
+                `SELECT * FROM tabela_prestadores WHERE id = ?`,
+                [id]
+            )
+        if(Array.isArray(rows) && rows.length === 0) return null
 
-            const rows = await db.execute(query, value);
-
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+            return Array.isArray(rows) ? rows[0] as prestadorDBType : null;
         } catch (error) {
             console.log(error);
             return null;
@@ -78,7 +78,6 @@ export const PrestadorModel = {
                 updatedPrestador.taxa_urgencia,
                 updatedPrestador.minimo_desconto,
                 updatedPrestador.percentagem_desconto,
-                updatedPrestador.disponivel,
                 updatedPrestador.enabled,
                 new Date(),
                 id,

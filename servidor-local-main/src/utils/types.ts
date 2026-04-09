@@ -83,7 +83,6 @@ export interface prestadorDBType {
     taxa_urgencia: number,
     minimo_desconto: number,
     percentagem_desconto: number,
-    disponivel: boolean, //houve um erro na criação da tabela, a tabela tem a coluna "disponivel" e a coluna "enabled"
     enabled: boolean,
     created_at: string,
     update_at: string
@@ -100,6 +99,7 @@ export interface PrestacaoServicoDBType{
     id_servico: number,
     preco_hora: number,
     estado: string,
+    urgente: boolean,
     finalizado: string,
     id_prestador: string,
     enabled: boolean,
