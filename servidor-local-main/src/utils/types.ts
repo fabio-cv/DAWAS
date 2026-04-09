@@ -6,12 +6,6 @@ export interface PedidoServicoType {
     urgente: boolean;
 }
 
-export interface ResponseType {
-    status: boolean,
-    message: string,
-    data: ServicoType | null,
-}
-
 export interface ServicoType {
     nome: string,
     precoHora: number
@@ -119,4 +113,20 @@ export enum EstadoPrestacaoServico{
     FINALIZADO = "finalizado",
     EM_PROGRESSO = "em_progresso",
     CANCELADO = "cancelado"
+}
+
+export interface ResponseType<T>{
+    status: "sucess" | "error",
+    message: string,
+    data: T | null
+}
+
+export interface PrestacaoServicoDetalhadoType {
+    id: string, 
+    nome_utilizador: string,
+    email_utilizador: string,
+    nome_servico: string,
+    descricao: string,
+    data_pedido: string,
+    urgente: boolean
 }

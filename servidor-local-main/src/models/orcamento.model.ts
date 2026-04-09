@@ -17,6 +17,7 @@ export const OrcamentoModel = {
             ];
 
             const rows = await db.execute(query, values);
+            return rows
         } catch (error) {
             console.log(error);
             return null;

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { OrcamentoModel } from "../models/orcamento.model.js";
-import { EstadoProposta, type orcamentoDBType, type propostaDBType } from "../utils/types.js";
+import { EstadoProposta, type orcamentoDBType, type propostaDBType, type ResponseType } from "../utils/types.js";
 import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
 import { PropostaModel } from "../models/proposta.model.js";
 import { PrestadorModel } from "../models/prestador.model.js";
@@ -11,28 +11,33 @@ export const OrcamentoController = {
         const newOrcamento: orcamentoDBType = req.body;
 
         if (!newOrcamento) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de orcamento invalidos",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const createOrcamentoResponse = await OrcamentoModel.create(newOrcamento);
 
         if (createOrcamentoResponse === null) {
-            return res.status(400).json({
+
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar orcamento",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        return res.status(201).json({
-            status: "success",
+        const response: ResponseType<orcamentoDBType> = {
+            status: "sucess",
             message: "Orcamento criado com sucesso",
             data: createOrcamentoResponse
-        });
+        }
+
+        return res.status(201).json(response);
     },
 
     async getAll(req: Request, res: Response) {
@@ -151,43 +156,51 @@ export const OrcamentoController = {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
     
 
     const prestacaoServico = await PrestacaoServicoModel.getByIdOrcamento( id as string)
 
     if (!prestacaoServico) {
-        return res.status(404).json({
+
+        const response: ResponseType<null> = {
             status: "error",
             message: "Prestacao de servico nao encontrada",
             data: null
-        });
+        }
+        return res.status(404).json(response);
     }
 
     // FETCH ALL PROPOSTAL
     const proposals = await PropostaModel.getByPrestacaoServico(String(prestacaoServico.id))
 
     if(!proposals){
-        return res.status(404).json({
+        const response: ResponseType<null> = {
             status: "error",
             message: "Proposta não encontrada",
             data: null
-        })
+        }
+
+        return res.status(404).json(response)
     }
 
     const acceptedProposal: propostaDBType | undefined = proposals.find((proposal)=>proposal.estado === EstadoProposta.ACEITE)
 
     if(!acceptedProposal){
-        return res.status(404).json({
+
+        const response: ResponseType<null> = {
             status: "error",
             message: "Ainda nenhuma proposta aceite",
             data: null
-        })
+        }
+
+        return res.status(404).json(response)
     }
 
     const precoHora = acceptedProposal.preco_hora
@@ -196,11 +209,14 @@ export const OrcamentoController = {
     const prestador =  await PrestadorModel.get(acceptedProposal.id_prestador)
 
     if(!prestador){
-        return res.status(404).json({
+
+        const response: ResponseType<null> = {
             status: "error",
             message: "Prestador não encontrado",
             data: null
-        })
+        }
+
+        return res.status(404).json(response)
     }
 
     const urgencyTax = prestador.taxa_urgencia
@@ -220,47 +236,54 @@ export const OrcamentoController = {
     const updatedOrcamentoResponse = await OrcamentoModel.updateBudget(id as string, subtotal)
 
     if(!updatedOrcamentoResponse){
-        return res.status(400).json({
+        const response: ResponseType<null> = {
             status:"error",
             message: "Erro ao calcular orcamento",
             data: null
-        })
+        }
+        return res.status(400).json(response)
     }
 
-    return res.status(200).json({
+    const response: ResponseType<orcamentoDBType> = {
         status: "sucess",
         message: "Orcamento calculado e atualizado com sucesso",
         data: updatedOrcamentoResponse
-    })
-    },
+    }
 
+    return res.status(200).json(response)
+
+    },
 
 
     async delete(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const deleteOrcamentoResponse = await OrcamentoModel.delete(id as string);
 
         if (!deleteOrcamentoResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao apagar orcamento",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<orcamentoDBType> = {
+            status: "sucess",
             message: "Orcamento apagado com sucesso",
             data: deleteOrcamentoResponse,
-        });
+        }
+
+        return res.status(200).json(response);
     }
 };
