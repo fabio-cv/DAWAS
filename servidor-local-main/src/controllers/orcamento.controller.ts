@@ -44,46 +44,51 @@ export const OrcamentoController = {
         const getAllOrcamentoResponse = await OrcamentoModel.getAll();
 
         if (!getAllOrcamentoResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar orcamentos",
                 data: null
-            });
+            }
+            return res.status(500).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<orcamentoDBType> = {
+            status: "sucess",
             message: "Orcamentos buscados com sucesso",
             data: getAllOrcamentoResponse
-        });
+        }
+        return res.status(200).json();
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID de orcamento nao fornecido",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const getOrcamentoResponse = await OrcamentoModel.get(id as string);
 
         if (!getOrcamentoResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Orcamento nao encontrado",
                 data: null
-            });
+            }
+            return res.status(404).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<orcamentoDBType> = {
+            status: "sucess",
             message: "Orcamento encontrado com sucesso",
             data: getOrcamentoResponse
-        });
+        }
+        return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
@@ -91,66 +96,42 @@ export const OrcamentoController = {
         const updatedOrcamento: orcamentoDBType = req.body;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         if (!updatedOrcamento) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de orcamento invalidos",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const updateOrcamentoResponse = await OrcamentoModel.update(id as string, updatedOrcamento);
 
         if (!updateOrcamentoResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar orcamento",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<orcamentoDBType> = {
+            status: "sucess",
             message: "Orcamento atualizado com sucesso",
             data: updateOrcamentoResponse,
-        });
+        }
+        return res.status(200).json(response);
     },
     //Ex-2
-    async calcularTotal(req: Request, res: Response) {
-        const { id } = req.params;
-
-        if (!id) {
-            return res.status(400).json({
-                status: "error",
-                message: "ID obrigatório",
-                data: null,
-            });
-        }
-
-        const total = await OrcamentoModel.calcularTotal(id as string);
-
-        if (total === null) {
-            return res.status(404).json({
-                status: "error",
-                message: "Orcamento nao encontrado ou sem prestacoes de servico com proposta aceite",
-                data: null,
-            });
-        }
-
-        return res.status(200).json({
-            status: "success",
-            message: "Total do orcamento calculado com sucesso",
-            data: { total },
-        });
-    },
-
     //calcular budget
     async calcularBudget(req: Request, res: Response) {
         const { id } = req.params;
