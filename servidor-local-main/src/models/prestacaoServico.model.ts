@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { PrestacaoServicoDBType } from "../utils/types.js";
+import type { PrestacaoServicoDBType, PrestacaoServicoDetalhadoType } from "../utils/types.js";
 
 export const PrestacaoServicoModel = {
     async create(newPrestacaoServico: PrestacaoServicoDBType) {
@@ -131,6 +131,34 @@ export const PrestacaoServicoModel = {
         } catch (error) {
             console.log(error);
             return null;
+        }
+    },
+    async getAllPrestacaoServicoDetalhada(limit: number, offset: number){
+        try {
+            const query = `
+            SELECT 
+                ps.id as id_prestacao_servico,
+                ps.designacao as descricao,
+                u.nome as nome_utilizador,
+                u.email as email_utilizador,
+                s.nome as nome_servico,
+                ps.created_at as data_pedido,
+                ps.urgente
+            FROM tabela_prestacao_servicos ps
+            INNER JOIN tabela_utilizadores u ON ps.id_utilizador = u.id
+            INNER JOIN tabela_servicos s ON ps.id_servico
+            ORDER BY ps.created_at DESC
+            LIMIT ? OFFSET ?
+            `
+
+            const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(query, [limit.toString(), offset.toString()])
+
+            if(Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
+        }catch(error){
+            console.log(error);
+            return null
+            
         }
     }
 };
