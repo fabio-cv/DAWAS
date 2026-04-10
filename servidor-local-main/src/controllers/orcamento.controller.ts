@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { OrcamentoModel } from "../models/orcamento.model.js";
-import { EstadoProposta, type orcamentoDBType, type propostaDBType } from "../utils/types.js";
+import { EstadoProposta, type orcamentoDBType, type prestadorDBType, type propostaDBType } from "../utils/types.js";
 import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
 import { PropostaModel } from "../models/proposta.model.js";
 import { PrestadorModel } from "../models/prestador.model.js";
@@ -171,6 +171,8 @@ export const OrcamentoController = {
 
     // FETCH ALL PROPOSTAL
     const proposals = await PropostaModel.getByPrestacaoServico(String(prestacaoServico.id))
+
+    
 
     if(!proposals){
         return res.status(404).json({
