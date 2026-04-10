@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import { formatDateToDDMMYYYY } from "../utils/date.js";
 import { hashPassword } from "../utils/password.js";
@@ -5,9 +6,9 @@ import type { UserDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const UsersModel = {
-    async create(user: UserDBType) {
+    async create(user: UserDBType): Promise<UserDBType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute <UserDBType & RowDataPacket[]>(
                 `INSERT INTO tabela_utilizadores 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
@@ -26,7 +27,7 @@ export const UsersModel = {
                 ],
             );
             console.log({ rows });
-            return rows;
+            return rows as UserDBType;
         } catch (err) {
             console.log(err);
             return null;

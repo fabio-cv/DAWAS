@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { UserDBType } from "../utils/types.js";
+import type { ResponseType, UserDBType } from "../utils/types.js";
 import { UsersModel } from "../models/user.model.js";
 import { generateUUID } from "../utils/uuid.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
@@ -11,22 +11,24 @@ export const UserController = {
         const user: UserDBType = req.body;
 
         if (!user) {
-            res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de utilizador invalidos",
                 data: null,
-            });
+            }
+            res.status(400).json(response);
         }
 
         console.log(user);
 
-        const createUserResponse = await UsersModel.create(user);
+        const createUserResponse: UserDBType | null = await UsersModel.create(user);
 
-        res.status(201).json({
-            status: "successo",
+        const response: ResponseType<UserDBType> = {
+            status: "sucess",
             message: "Utilizador criado com sucesso",
             data: createUserResponse
-        });
+        }
+        res.status(201).json(response);
     },
 
 
@@ -41,23 +43,26 @@ export const UserController = {
         const getUserResponse = await UsersModel.get(id as string);
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID do utilizador é obrigatório",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
 
         }
 
         if (!getUserResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Utilizador não encontrado",
                 data: null
-            });
+            }
+            return res.status(404).json(response);
 
         }
 
+        //implememnt generic response then
         res.json(getUserResponse);
     },
 
