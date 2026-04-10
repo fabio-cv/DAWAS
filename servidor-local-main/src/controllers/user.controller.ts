@@ -10,37 +10,52 @@ export const UserController = {
     async create(req: Request, res: Response) {
         const user: UserDBType = req.body;
 
-        if (!user) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Dados de utilizador invalidos",
-                data: null,
+        try {
+            if (!user) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Dados de utilizador invalidos",
+                    data: null,
+                }
+                return res.status(400).json(response);
             }
-            res.status(400).json(response);
+
+            const createUserResponse: UserDBType | null = await UsersModel.create(user);
+
+            const response: ResponseType<UserDBType> = {
+                status: "success",
+                message: "Utilizador criado com sucesso",
+                data: createUserResponse
+            }
+            return res.status(201).json(response);
+            
+        } catch (error) {
+            console.log(error);
+            return null  
         }
 
-        console.log(user);
-
-        const createUserResponse: UserDBType | null = await UsersModel.create(user);
-
-        const response: ResponseType<UserDBType> = {
-            status: "sucess",
-            message: "Utilizador criado com sucesso",
-            data: createUserResponse
-        }
-        res.status(201).json(response);
+       
     },
 
 
     async getAll(req: Request, res: Response) {
-        const getUsersResponse = await UsersModel.getAll();
+        
+        try {
+            const getUsersResponse = await UsersModel.getAll();
+            return res.json(getUsersResponse);
+            
+        } catch (error) {
+            console.log(error);
+            return null
+            
+        }
 
-        res.json(getUsersResponse);
+        
     },
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
-        const getUserResponse = await UsersModel.get(id as string);
+        const getUserResponse: UserDBType | null = await UsersModel.get(id as string);
 
         if (!id) {
             const response: ResponseType<null> = {
@@ -62,8 +77,12 @@ export const UserController = {
 
         }
 
-        //implememnt generic response then
-        res.json(getUserResponse);
+        const response: ResponseType<UserDBType> = {
+            status: "success",
+            message: "Sucesso ao buscar usuário",
+            data: getUserResponse
+        }
+        return res.status(200).json(getUserResponse);
     },
 
     async update(req: Request, res: Response) {

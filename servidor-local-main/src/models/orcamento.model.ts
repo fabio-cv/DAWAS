@@ -5,7 +5,7 @@ import type { OrcamentoDBType } from "../utils/types.js";
 export const OrcamentoModel = {
     async create(orcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
-            const query = `INSERT INTO tabela_orcamento VALUES (?, ?, ?, ?, ?, ?)`;
+            const query = `INSERT INTO tabela_orcamentos (id, total, id_utilizador, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`;
 
             const values = [
                 null,
@@ -24,15 +24,15 @@ export const OrcamentoModel = {
         }
     },
 
-    async getAll(): Promise<OrcamentoDBType | null> {
+    async getAll(): Promise<OrcamentoDBType[]> {
         try {
             const query = `SELECT * FROM tabela_orcamento`;
-            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query)
+            const [rows] = await db.execute<OrcamentoDBType[] & RowDataPacket[]>(query)
 
-            return rows as OrcamentoDBType;
+            return rows as OrcamentoDBType[];
         } catch (error) {
             console.log(error);
-            return null
+            return []
         }
     },
 

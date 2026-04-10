@@ -20,17 +20,17 @@ export interface ServicoDBType {
     categoria: string,
     enabled: boolean,
     created_at: string,
-    update_at: string
+    updated_at: string
 }
 
 
 export interface OrcamentoDBType {
-    id: string,
+    id: number,
     total: number,
     id_utilizador: string,
     enabled: boolean,
     created_at: string,
-    update_at: string
+    updated_at: string
 }
 
 export interface PropostaDBType{
@@ -42,7 +42,7 @@ export interface PropostaDBType{
     estado: string,
     enabled: boolean,
     created_at: string,
-    update_at: string
+    updated_at: string
 }
 
 export interface PrestadorDBType {
@@ -54,7 +54,7 @@ export interface PrestadorDBType {
     percentagem_desconto: number,
     enabled: boolean,
     created_at: string,
-    update_at: string
+    updated_at: string
 
 }
 
@@ -74,14 +74,14 @@ export interface PrestacaoServicoDBType{
     id_prestador: string,
     enabled: boolean,
     created_at: string,
-    update_at: string
+    updated_at: string
 
 } 
 
 export enum EstadoProposta{
     PENDENTE =  "pendente",
-    ACEITE = "aceite",
-    CANCELADO = "cancelado"
+    ACEITE = "aceito",
+    RECUSADO = "recusado"
 }
 
 export enum EstadoPrestacaoServico{
@@ -101,7 +101,7 @@ export interface PrestacaoServicoDetalhadoType {
     urgente: boolean
 }
 export interface ResponseType<T>{
-    status: "sucess" | "error",
+    status: "success" | "error",
     message: string,
     data: T | null
 }

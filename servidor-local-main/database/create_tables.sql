@@ -1,7 +1,4 @@
-
--- drawDB no google para criar o diagrama da base de dados
-
-CREATE TABLE tabela_prestadores(
+CREATE TABLE IF NOT EXISTS `tabela_prestadores`(
 	id VARCHAR(255) PRIMARY KEY NOT NULL,
 	nif INT NOT NULL,
     precoHora DECIMAL(10, 2) NOT NULL,
@@ -15,7 +12,7 @@ CREATE TABLE tabela_prestadores(
     updated_at DATETIME NOT NULL
 );
 
-ALTER TABLE tabela_prestadores
+ALTER TABLE `tabela_prestadores`
     DROP COLUMN taxaUrgencia,
     ADD COLUMN taxa_urgencia DECIMAL(10, 3) AFTER profissao,
     DROP COLUMN minimoDesconto,
@@ -25,9 +22,9 @@ ALTER TABLE tabela_prestadores
     DROP COLUMN precoHora
 ;
 
-CREATE TABLE tabela_utilizadores( 
-	id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE, 
-    nome VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS `tabela_utilizadores`( 
+	`id` VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE, 
+    `nome` VARCHAR(50) NOT NULL,
     `numero_identificacao` VARCHAR(100) NOT NULL UNIQUE,
 	`data_nascimento` DATE NOT NULL,
 	`email` VARCHAR(100) NOT NULL,
@@ -37,10 +34,10 @@ CREATE TABLE tabela_utilizadores(
 	`password` VARCHAR(255) NOT NULL,
 	`enabled` BOOLEAN NOT NULL,
 	`created_at` DATETIME NOT NULL,
-	`update_at` DATETIME NOT NULL
+	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE tabela_servicos (
+CREATE TABLE IF NOT EXISTS `tabela_servicos` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`nome` VARCHAR(50) NOT NULL,
 	`descricao` VARCHAR(255),
@@ -50,10 +47,10 @@ CREATE TABLE tabela_servicos (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tabela_orcamento` (
+CREATE TABLE IF NOT EXISTS `tabela_orcamentos` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`total` DOUBLE NOT NULL,
-	`id_utilizadores` VARCHAR(255) NOT NULL,
+	`id_utilizador` VARCHAR(255) NOT NULL,
 	`enabled` BOOLEAN NOT NULL,
 	`created_at` DATETIME NOT NULL,
 	`updated_at` DATETIME NOT NULL
@@ -74,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `tabela_prestacao_servicos` (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tabela_proposta` (
+CREATE TABLE IF NOT EXISTS `tabela_propostas` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`id_prestacao_servico` INTEGER NOT NULL,
 	`preco_hora` DOUBLE NOT NULL,
@@ -86,13 +83,13 @@ CREATE TABLE IF NOT EXISTS `tabela_proposta` (
 );
 
 
-ALTER TABLE tabela_proposta
+ALTER TABLE `tabela_propostas`
 	ADD CONSTRAINT fk_prestacao_servico_proposta
 	FOREIGN KEY (id_prestacao_servico)
-    REFERENCES tabela_prestacao_servico(id)
+    REFERENCES tabela_prestacao_servicos(id)
 ;
 
-ALTER TABLE tabela_prestacao_servico
+ALTER TABLE `tabela_prestacao_servicos`
 	ADD CONSTRAINT fk_prestadores_prestacao_servico
     FOREIGN KEY (id_prestador)
     REFERENCES tabela_prestadores(id), 
@@ -101,7 +98,7 @@ ALTER TABLE tabela_prestacao_servico
     REFERENCES tabela_servicos(id)
 ;
 
-ALTER TABLE tabela_utilizadores 
+ALTER TABLE `tabela_utilizadores` 
 	DROP COLUMN update_at, 
 	ADD COLUMN updated_at DATETIME NOT NULL
 ;

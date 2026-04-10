@@ -40,11 +40,11 @@ export const UsersModel = {
         return rows;
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<UserDBType | null> {
         console.log("getUserById", id);
 
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<UserDBType & RowDataPacket[]>(
                 `SELECT * FROM tabela_utilizadores 
         WHERE tabela_utilizadores.id = ?`,
 
@@ -52,7 +52,7 @@ export const UsersModel = {
             );
 
             if (Array.isArray(rows) && rows.length === 0) return null;
-            return Array.isArray(rows) ? rows[0] : null;
+            return rows as UserDBType
         } catch (err) {
             console.log(err);
             return null;

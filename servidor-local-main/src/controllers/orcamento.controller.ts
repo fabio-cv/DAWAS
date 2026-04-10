@@ -33,7 +33,7 @@ export const OrcamentoController = {
         }
 
         const response: ResponseType<OrcamentoDBType> = {
-            status: "sucess",
+            status: "success",
             message: "Orcamento criado com sucesso",
             data: createOrcamentoResponse
         }
@@ -54,7 +54,7 @@ export const OrcamentoController = {
         }
 
         const response: ResponseType<OrcamentoDBType> = {
-            status: "sucess",
+            status: "success",
             message: "Orcamentos buscados com sucesso",
             data: getAllOrcamentoResponse
         }
@@ -85,7 +85,7 @@ export const OrcamentoController = {
         }
 
         const response: ResponseType<OrcamentoDBType> = {
-            status: "sucess",
+            status: "success",
             message: "Orcamento encontrado com sucesso",
             data: getOrcamentoResponse
         }
@@ -126,7 +126,7 @@ export const OrcamentoController = {
         }
 
         const response: ResponseType<OrcamentoDBType> = {
-            status: "sucess",
+            status: "success",
             message: "Orcamento atualizado com sucesso",
             data: updateOrcamentoResponse,
         }
@@ -229,7 +229,7 @@ export const OrcamentoController = {
     }
 
     const response: ResponseType<OrcamentoDBType> = {
-        status: "sucess",
+        status: "success",
         message: "Orcamento calculado e atualizado com sucesso",
         data: updatedOrcamentoResponse
     }
@@ -263,7 +263,7 @@ export const OrcamentoController = {
         }
 
         const response: ResponseType<OrcamentoDBType> = {
-            status: "sucess",
+            status: "success",
             message: "Orcamento apagado com sucesso",
             data: deleteOrcamentoResponse,
         }
