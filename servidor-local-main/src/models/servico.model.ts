@@ -1,8 +1,9 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { ServicoDBType } from "../utils/types.js";
 
 export const ServicoModel = {
-    async create(newServico: ServicoDBType) {
+    async create(newServico: ServicoDBType): Promise<ServicoDBType | null> {
         try {
             const query = `INSERT INTO tabela_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
@@ -16,9 +17,9 @@ export const ServicoModel = {
                 new Date(),
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as ServicoDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -26,13 +27,13 @@ export const ServicoModel = {
     },
 
 
-    async getAll() {
+    async getAll(): Promise<ServicoDBType | null> {
         try {
             const query = `SELECT * FROM tabela_servicos`;
 
-            const [rows] = await db.execute(query);
+            const [rows] = await db.execute<ServicoDBType &  RowDataPacket[]>(query);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            return rows as ServicoDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -40,22 +41,22 @@ export const ServicoModel = {
     },
 
 
-    async get(id: string) {
+    async get(id: string):Promise< ServicoDBType|null>{
         try {
             const query = `SELECT * FROM tabela_servicos WHERE id = ?`;
 
             const value = [id];
 
-            const rows = await db.execute(query, value);
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, value);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+            return rows as ServicoDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async update(id: string, updatedServico: ServicoDBType) {
+    async update(id: string, updatedServico: ServicoDBType): Promise<ServicoDBType | null> {
         try {
             const query = `UPDATE tabela_servicos 
                         SET 
@@ -77,9 +78,9 @@ export const ServicoModel = {
                 id,
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as ServicoDBType;
         } catch (error) {
             console.log(error);
             return null;
