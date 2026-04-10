@@ -1,28 +1,3 @@
-
-export interface PedidoServicoType {
-    cliente: string;
-    descricao: string;
-    horasEstimadas: number;
-    urgente: boolean;
-}
-
-export interface ServicoType {
-    nome: string,
-    precoHora: number
-    categoria: string
-    minimoDescontado: number
-    percentagemDesconto?: number
-}
-
-export interface PrestadorType {
-    nome: string
-    precoHora: number
-    profissao: string
-    minimoParaDesconto: number
-    percentagemDesconto: number
-    taxaUrgencia: number
-}
-
 export interface UserDBType {
     id: string,
     nome: string,
@@ -116,12 +91,6 @@ export enum EstadoPrestacaoServico{
     CANCELADO = "cancelado"
 }
 
-export interface ResponseType<T>{
-    status: "sucess" | "error",
-    message: string,
-    data: T | null
-}
-
 export interface PrestacaoServicoDetalhadoType {
     id: string, 
     nome_utilizador: string,
@@ -130,4 +99,9 @@ export interface PrestacaoServicoDetalhadoType {
     descricao: string,
     data_pedido: string,
     urgente: boolean
+}
+export interface ResponseType<T>{
+    status: "sucess" | "error",
+    message: string,
+    data: T | null
 }
