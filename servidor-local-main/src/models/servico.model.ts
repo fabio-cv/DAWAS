@@ -1,5 +1,4 @@
 import db from "../lib/db.js";
-import { updateService } from "../servico.js";
 import type { ServicoDBType } from "../utils/types.js";
 
 export const ServicoModel = {
