@@ -55,40 +55,4 @@ components:
           type: boolean
           example: true
 
-    # # schema generico para resposta de sucesso
-    # RespostaSucesso:
-    #   type: object
-    #   properties:
-    #     message:
-    #       type: string
-    #       example: "Requisição realizada com sucesso"
-
-    #     status:
-    #       type: boolean
-    #       example: true
-
-    #     data: 
-    #       type: object
-    #       properties:
-    #         $ref: "#/components/schemas/servicos"
-
-
-
-    # # schema generico para resposta de erro
-    # RespostaError:
-    #   type: object
-    #   properties:
-    #     message:
-    #       type: string
-    #       example: "Erro ao buscar serviços"
-
-    #     status:
-    #       type: boolean
-    #       example: false
-
-    #     data:
-    #       type: object
-    #       properties: null
-
-
     

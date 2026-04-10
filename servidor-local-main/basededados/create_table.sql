@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `tabela_orcamento` (
 	`updated_at` DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `tabela_prestacao_servico` (
+CREATE TABLE IF NOT EXISTS `tabela_prestacao_servicos` (
 	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
 	`designacao` VARCHAR(100) NOT NULL,
 	`subtotal` DOUBLE NOT NULL,

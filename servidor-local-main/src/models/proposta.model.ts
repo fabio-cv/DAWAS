@@ -1,10 +1,10 @@
 
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { propostaDBType } from "../utils/types.js";
+import type { PropostaDBType } from "../utils/types.js";
 
 export const PropostaModel = {
-    async create(newProposta: propostaDBType) {
+    async create(newProposta: PropostaDBType): Promise<PropostaDBType | null> {
         try {
             const query = `INSERT INTO tabela_proposta VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -20,22 +20,22 @@ export const PropostaModel = {
                 new Date(),
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as PropostaDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<PropostaDBType | null> {
         try {
             const query = `SELECT * FROM tabela_proposta`;
 
-            const [rows] = await db.execute(query);
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(query);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            return rows as PropostaDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -58,9 +58,9 @@ export const PropostaModel = {
     },
 
 
-    async getByPrestacaoServico(idPrestacaoServico: string): Promise<propostaDBType[] | null>{
+    async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaDBType[] | null>{
         try{
-            const [rows] = await db.execute<propostaDBType[] & RowDataPacket[]>(`
+            const [rows] = await db.execute<PropostaDBType[] & RowDataPacket[]>(`
                 SELECT * FROM tabela_proposta
                 WHERE tabela_proposta.id_prestacao_servico = ?
                 `, [idPrestacaoServico])
@@ -75,7 +75,7 @@ export const PropostaModel = {
         }
     },
 
-    async update(id: string, updatedProposta: propostaDBType) {
+    async update(id: string, updatedProposta: PropostaDBType) {
         try {
             const query = `UPDATE tabela_proposta
                         SET

@@ -1,34 +1,3 @@
-
-export interface PedidoServicoType {
-    cliente: string;
-    descricao: string;
-    horasEstimadas: number;
-    urgente: boolean;
-}
-
-export interface ResponseType {
-    status: boolean,
-    message: string,
-    data: ServicoType | null,
-}
-
-export interface ServicoType {
-    nome: string,
-    precoHora: number
-    categoria: string
-    minimoDescontado: number
-    percentagemDesconto?: number
-}
-
-export interface PrestadorType {
-    nome: string
-    precoHora: number
-    profissao: string
-    minimoParaDesconto: number
-    percentagemDesconto: number
-    taxaUrgencia: number
-}
-
 export interface UserDBType {
     id: string,
     nome: string,
@@ -55,7 +24,7 @@ export interface ServicoDBType {
 }
 
 
-export interface orcamentoDBType {
+export interface OrcamentoDBType {
     id: string,
     total: number,
     id_utilizador: string,
@@ -64,7 +33,7 @@ export interface orcamentoDBType {
     update_at: string
 }
 
-export interface propostaDBType{
+export interface PropostaDBType{
     id: string,
     id_prestacao: number,
     id_prestador: string,
@@ -76,14 +45,13 @@ export interface propostaDBType{
     update_at: string
 }
 
-export interface prestadorDBType {
+export interface PrestadorDBType {
     id: string,
     nif: string,
     profissao: string,
     taxa_urgencia: number,
     minimo_desconto: number,
     percentagem_desconto: number,
-    disponivel: boolean, //houve um erro na criação da tabela, a tabela tem a coluna "disponivel" e a coluna "enabled"
     enabled: boolean,
     created_at: string,
     update_at: string
@@ -97,9 +65,11 @@ export interface PrestacaoServicoDBType{
     subtotal: number,
     horas_estimadas: number,
     id_orcamento: number,
+    id_utilizador: string,
     id_servico: number,
     preco_hora: number,
     estado: string,
+    urgente: boolean,
     finalizado: string,
     id_prestador: string,
     enabled: boolean,
@@ -119,4 +89,19 @@ export enum EstadoPrestacaoServico{
     FINALIZADO = "finalizado",
     EM_PROGRESSO = "em_progresso",
     CANCELADO = "cancelado"
+}
+
+export interface PrestacaoServicoDetalhadoType {
+    id: string, 
+    nome_utilizador: string,
+    email_utilizador: string,
+    nome_servico: string,
+    descricao: string,
+    data_pedido: string,
+    urgente: boolean
+}
+export interface ResponseType<T>{
+    status: "sucess" | "error",
+    message: string,
+    data: T | null
 }

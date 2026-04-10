@@ -107,35 +107,3 @@ components:
           type: string
           example: "senha123"
 
-    # # schema generico para resposta de sucesso
-    # RespostaSucesso:
-    #   type: object
-    #   properties:
-    #     message: 
-    #       type: string
-    #       example: "Usuário criado com sucesso"
-
-    #     status:
-    #       type: boolean
-    #       example: true
-        
-    #     data: 
-    #       type: object
-    #       properties:
-    #         $ref: "#/components/schemas/users"
-
-    # # schema generico para resposta de erro
-    # RespostaError:
-    #   type: object
-    #   properties:
-    #     message:
-    #       type: string
-    #       example: "Erro ao buscar usuário"
-
-    #   status:
-    #     type: boolean
-    #     example: false
-
-    #   data: 
-    #     type: object
-    #     properties: null
