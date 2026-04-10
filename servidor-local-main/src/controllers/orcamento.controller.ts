@@ -57,7 +57,7 @@ export const OrcamentoController = {
             message: "Orcamentos buscados com sucesso",
             data: getAllOrcamentoResponse
         }
-        return res.status(200).json();
+        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
@@ -113,7 +113,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const updateOrcamentoResponse = await OrcamentoModel.update(id as string, updatedOrcamento);
+        const updateOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.update(id as string, updatedOrcamento);
 
         if (!updateOrcamentoResponse) {
             const response: ResponseType<null> = {
