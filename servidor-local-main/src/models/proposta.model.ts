@@ -29,13 +29,13 @@ export const PropostaModel = {
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<PropostaDBType | null> {
         try {
             const query = `SELECT * FROM tabela_proposta`;
 
-            const [rows] = await db.execute(query);
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(query);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            return rows as PropostaDBType;
         } catch (error) {
             console.log(error);
             return null;

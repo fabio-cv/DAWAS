@@ -35,21 +35,23 @@ export const PropostaController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllPropostaResponse = await PropostaModel.getAll();
+        const getAllPropostaResponse: PropostaDBType | null = await PropostaModel.getAll();
 
         if (!getAllPropostaResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar propostas",
                 data: null
-            });
+            }
+            return res.status(500).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<PropostaDBType> = {
+            status: "sucess",
             message: "Propostas buscadas com sucesso",
             data: getAllPropostaResponse
-        });
+        }
+        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
