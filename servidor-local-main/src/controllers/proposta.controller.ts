@@ -1,34 +1,37 @@
 import type { Request, Response } from "express";
 import { PropostaModel } from "../models/proposta.model.js";
-import type { propostaDBType } from "../utils/types.js";
+import type { PropostaDBType, ResponseType } from "../utils/types.js";
 
 export const PropostaController = {
     async create(req: Request, res: Response) {
-        const newProposta: propostaDBType = req.body;
+        const newProposta: PropostaDBType = req.body;
 
         if (!newProposta) {
-            return res.status(400).json({
+            const response: ResponseType<null> = ({
                 status: "error",
                 message: "Dados de proposta invalidos",
                 data: null
-            });
+            })
+            return res.status(400).json(response);
         }
 
-        const createPropostaResponse = await PropostaModel.create(newProposta);
+        const createPropostaResponse: PropostaDBType | null = await PropostaModel.create(newProposta);
 
         if (createPropostaResponse === null) {
-            return res.status(400).json({
+            const response: ResponseType<null> = ({
                 status: "error",
                 message: "Erro ao criar proposta",
                 data: null
-            });
+            })
+            return res.status(400).json(response);
         }
 
-        return res.status(201).json({
-            status: "success",
+        const response: ResponseType<PropostaDBType> = {
+            status: "sucess",
             message: "Proposta criada com sucesso",
             data: createPropostaResponse
-        });
+        }
+        return res.status(201).json(response);
     },
 
     async getAll(req: Request, res: Response) {
@@ -79,7 +82,7 @@ export const PropostaController = {
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedProposta: propostaDBType = req.body;
+        const updatedProposta: PropostaDBType = req.body;
 
         if (!id) {
             return res.status(400).json({
