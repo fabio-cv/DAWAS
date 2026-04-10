@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import { response, type Request, type Response } from "express";
 import { PropostaModel } from "../models/proposta.model.js";
 import type { PropostaDBType, ResponseType } from "../utils/types.js";
 
@@ -58,28 +58,32 @@ export const PropostaController = {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID de proposta nao fornecido",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        const getPropostaResponse = await PropostaModel.get(id as string);
+        const getPropostaResponse: PropostaDBType | null = await PropostaModel.get(id as string);
 
         if (!getPropostaResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Proposta nao encontrada",
                 data: null
-            });
+            }
+            return res.status(404).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<PropostaDBType> = {
+            status: "sucess",
             message: "Proposta encontrada com sucesso",
             data: getPropostaResponse
-        });
+        }
+
+        return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
@@ -87,61 +91,67 @@ export const PropostaController = {
         const updatedProposta: PropostaDBType = req.body;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         if (!updatedProposta) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de proposta invalidos",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        const updatePropostaResponse = await PropostaModel.update(id as string, updatedProposta);
+        const updatePropostaResponse: PropostaDBType | null = await PropostaModel.update(id as string, updatedProposta);
 
         if (!updatePropostaResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar proposta",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<PropostaDBType> = {
+            status: "sucess",
             message: "Proposta atualizada com sucesso",
             data: updatePropostaResponse,
-        });
+        }
+        return res.status(200).json(response);
     },
     //Ex-3
     async aceitar(req: Request, res: Response) {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID de proposta nao fornecido",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const aceitarResponse = await PropostaModel.aceitar(id as string);
 
         if (!aceitarResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Proposta nao encontrada ou ja nao esta disponivel",
                 data: null,
-            });
+            }
+            return res.status(404).json(response);
         }
 
-        return res.status(200).json({
-            status: "success",
+        return res.status(200).json( {
+            status: "sucess",
             message: "Proposta aceite com sucesso. Propostas concorrentes rejeitadas.",
             data: aceitarResponse,
         });
@@ -151,27 +161,30 @@ export const PropostaController = {
         const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<PropostaDBType | null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const deletePropostaResponse = await PropostaModel.delete(id as string);
 
         if (!deletePropostaResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao apagar proposta",
                 data: null,
-            });
+            }
+            return res.status(400).json(response);
         }
-
-        return res.status(200).json({
-            status: "success",
+        const response: ResponseType<PropostaDBType> = {
+            status: "sucess",
             message: "Proposta apagada com sucesso",
             data: deletePropostaResponse,
-        });
+        }
+
+        return res.status(200).json(response);
     }
 };

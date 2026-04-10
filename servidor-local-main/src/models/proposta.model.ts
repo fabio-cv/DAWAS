@@ -42,15 +42,15 @@ export const PropostaModel = {
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<PropostaDBType | null> {
         try {
             const query = `SELECT * FROM tabela_proposta WHERE id = ?`;
 
             const value = [id];
 
-            const rows = await db.execute(query, value);
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(query, value);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+            return rows as PropostaDBType
         } catch (error) {
             console.log(error);
             return null;
@@ -75,7 +75,7 @@ export const PropostaModel = {
         }
     },
 
-    async update(id: string, updatedProposta: PropostaDBType) {
+    async update(id: string, updatedProposta: PropostaDBType): Promise<PropostaDBType | null> {
         try {
             const query = `UPDATE tabela_proposta
                         SET
@@ -101,9 +101,9 @@ export const PropostaModel = {
                 id,
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as PropostaDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -127,7 +127,7 @@ export const PropostaModel = {
             await db.execute(queryUpdatePrestacao, [new Date(), idPrestacaoServico]);
 
             const queryRejeitarConcorrentes = `UPDATE tabela_proposta SET estado = 'recusado', updated_at = ? WHERE id_prestacao_servico = ? AND id != ? AND enabled = true`;
-            await db.execute(queryRejeitarConcorrentes, [new Date(), idPrestacaoServico, idProposta]);
+            const [rows] =  await db.execute(queryRejeitarConcorrentes, [new Date(), idPrestacaoServico, idProposta]);
 
             return { idProposta, idPrestacaoServico, estado: "aceito" };
         } catch (error) {
