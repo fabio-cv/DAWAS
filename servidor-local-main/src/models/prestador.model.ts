@@ -1,8 +1,9 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { prestadorDBType } from "../utils/types.js";
+import type { PrestadorDBType } from "../utils/types.js";
 
 export const PrestadorModel = {
-    async create(newPrestador: prestadorDBType) {
+    async create(newPrestador: PrestadorDBType): Promise<PrestadorDBType | null> {
         try {
             const query = `INSERT INTO tabela_prestadores VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -18,29 +19,29 @@ export const PrestadorModel = {
                 new Date()
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as PrestadorDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<PrestadorDBType | null> {
         try {
             const query = `SELECT * FROM tabela_prestadores`;
 
-            const [rows] = await db.execute(query);
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(query);
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            return rows as PrestadorDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async get(id: string): Promise<prestadorDBType | null> {
+    async get(id: string): Promise<PrestadorDBType | null> {
         try {
 
             const [rows] = await db.execute(
@@ -49,14 +50,14 @@ export const PrestadorModel = {
             )
         if(Array.isArray(rows) && rows.length === 0) return null
 
-            return Array.isArray(rows) ? rows[0] as prestadorDBType : null;
+            return Array.isArray(rows) ? rows[0] as PrestadorDBType : null;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async update(id: string, updatedPrestador: prestadorDBType) {
+    async update(id: string, updatedPrestador: PrestadorDBType): Promise<PrestadorDBType | null>{
         try {
             const query = `UPDATE tabela_prestadores
                         SET
@@ -83,24 +84,24 @@ export const PrestadorModel = {
                 id,
             ];
 
-            const rows = await db.execute(query, values);
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(query, values);
 
-            return rows;
+            return rows as PrestadorDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async delete(id: string) {
+    async delete(id: string): Promise<PrestadorDBType | null> {
         try {
             const query = `DELETE FROM tabela_prestadores WHERE id = ?`;
 
             const value = [id];
 
-            const rows: any = await db.execute(query, value);
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(query, value);
 
-            return rows[0]?.affectedRows === 0 ? null : rows;
+            return rows as PrestadorDBType;
         } catch (error) {
             console.log(error);
             return null;
