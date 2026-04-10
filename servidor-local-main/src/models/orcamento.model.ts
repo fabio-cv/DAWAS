@@ -1,9 +1,10 @@
 
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { orcamentoDBType } from "../utils/types.js";
+import type { OrcamentoDBType } from "../utils/types.js";
 
 export const OrcamentoModel = {
-    async create(orcamento: orcamentoDBType) {
+    async create(orcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
             const query = `INSERT INTO tabela_orcamento VALUES (?, ?, ?, ?, ?, ?)`;
 
@@ -16,34 +17,34 @@ export const OrcamentoModel = {
                 new Date(),
             ];
 
-            const rows = await db.execute(query, values);
-            return rows
+            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, values);
+            return rows as OrcamentoDBType
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<OrcamentoDBType | null> {
         try {
             const query = `SELECT * FROM tabela_orcamento`;
-            const rows = await db.execute(query)
+            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : [];
+            return rows as OrcamentoDBType;
         } catch (error) {
             console.log(error);
             return null
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<OrcamentoDBType | null> {
         try {
             const query = `SELECT * FROM tabela_orcamento WHERE id = ?`;
 
             const value = [id];
 
-            const rows = await db.execute(query, value)
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, value)
+            return rows as OrcamentoDBType;
         } catch (error) {
             console.log(error);
             return null
@@ -51,7 +52,7 @@ export const OrcamentoModel = {
         }
     },
 
-    async update(id: string, updatedOrcamento: orcamentoDBType) {
+    async update(id: string, updatedOrcamento: OrcamentoDBType) {
         try {
             const query = `UPDATE tabela_orcamento SET total = ?, id_utilizador = ?, enabled = ?, update_at = ? WHERE id = ?`;
 

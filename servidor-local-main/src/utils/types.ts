@@ -49,7 +49,7 @@ export interface ServicoDBType {
 }
 
 
-export interface orcamentoDBType {
+export interface OrcamentoDBType {
     id: string,
     total: number,
     id_utilizador: string,
@@ -58,7 +58,7 @@ export interface orcamentoDBType {
     update_at: string
 }
 
-export interface propostaDBType{
+export interface PropostaDBType{
     id: string,
     id_prestacao: number,
     id_prestador: string,
@@ -70,7 +70,7 @@ export interface propostaDBType{
     update_at: string
 }
 
-export interface prestadorDBType {
+export interface PrestadorDBType {
     id: string,
     nif: string,
     profissao: string,

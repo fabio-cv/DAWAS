@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { OrcamentoModel } from "../models/orcamento.model.js";
-import { EstadoProposta, type orcamentoDBType, type propostaDBType, type ResponseType } from "../utils/types.js";
+import { EstadoProposta, type OrcamentoDBType, type PropostaDBType, type ResponseType } from "../utils/types.js";
 import { PrestacaoServicoModel } from "../models/prestacaoServico.model.js";
 import { PropostaModel } from "../models/proposta.model.js";
 import { PrestadorModel } from "../models/prestador.model.js";
@@ -8,7 +8,7 @@ import { PrestadorModel } from "../models/prestador.model.js";
 
 export const OrcamentoController = {
     async create(req: Request, res: Response) {
-        const newOrcamento: orcamentoDBType = req.body;
+        const newOrcamento: OrcamentoDBType = req.body;
 
         if (!newOrcamento) {
             const response: ResponseType<null> = {
@@ -19,7 +19,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const createOrcamentoResponse = await OrcamentoModel.create(newOrcamento);
+        const createOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.create(newOrcamento);
 
         if (createOrcamentoResponse === null) {
 
@@ -31,7 +31,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<orcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType> = {
             status: "sucess",
             message: "Orcamento criado com sucesso",
             data: createOrcamentoResponse
@@ -41,7 +41,7 @@ export const OrcamentoController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllOrcamentoResponse = await OrcamentoModel.getAll();
+        const getAllOrcamentoResponse: OrcamentoDBType | null= await OrcamentoModel.getAll();
 
         if (!getAllOrcamentoResponse) {
             const response: ResponseType<null> = {
@@ -52,7 +52,7 @@ export const OrcamentoController = {
             return res.status(500).json(response);
         }
 
-        const response: ResponseType<orcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType> = {
             status: "sucess",
             message: "Orcamentos buscados com sucesso",
             data: getAllOrcamentoResponse
@@ -72,7 +72,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const getOrcamentoResponse = await OrcamentoModel.get(id as string);
+        const getOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.get(id as string);
 
         if (!getOrcamentoResponse) {
             const response: ResponseType<null> = {
@@ -83,7 +83,7 @@ export const OrcamentoController = {
             return res.status(404).json(response);
         }
 
-        const response: ResponseType<orcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType> = {
             status: "sucess",
             message: "Orcamento encontrado com sucesso",
             data: getOrcamentoResponse
@@ -93,7 +93,7 @@ export const OrcamentoController = {
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedOrcamento: orcamentoDBType = req.body;
+        const updatedOrcamento: OrcamentoDBType = req.body;
 
         if (!id) {
             const response: ResponseType<null> = {
@@ -124,7 +124,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<orcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType> = {
             status: "sucess",
             message: "Orcamento atualizado com sucesso",
             data: updateOrcamentoResponse,
@@ -171,7 +171,7 @@ export const OrcamentoController = {
         return res.status(404).json(response)
     }
 
-    const acceptedProposal: propostaDBType | undefined = proposals.find((proposal)=>proposal.estado === EstadoProposta.ACEITE)
+    const acceptedProposal: PropostaDBType | undefined = proposals.find((proposal)=>proposal.estado === EstadoProposta.ACEITE)
 
     if(!acceptedProposal){
 
@@ -225,7 +225,7 @@ export const OrcamentoController = {
         return res.status(400).json(response)
     }
 
-    const response: ResponseType<orcamentoDBType> = {
+    const response: ResponseType<OrcamentoDBType> = {
         status: "sucess",
         message: "Orcamento calculado e atualizado com sucesso",
         data: updatedOrcamentoResponse
@@ -259,7 +259,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<orcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType> = {
             status: "sucess",
             message: "Orcamento apagado com sucesso",
             data: deleteOrcamentoResponse,
