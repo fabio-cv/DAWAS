@@ -98,10 +98,7 @@ ALTER TABLE `tabela_prestacao_servicos`
     REFERENCES tabela_servicos(id)
 ;
 
-ALTER TABLE `tabela_utilizadores` 
-	DROP COLUMN update_at, 
-	ADD COLUMN updated_at DATETIME NOT NULL
-;
+
     
 
 

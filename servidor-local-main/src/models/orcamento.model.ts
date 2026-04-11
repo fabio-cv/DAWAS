@@ -1,4 +1,4 @@
-import type { RowDataPacket } from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { OrcamentoDBType } from "../utils/types.js";
 
@@ -43,7 +43,7 @@ export const OrcamentoModel = {
             const value = [id];
 
             const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, value)
-            return rows as OrcamentoDBType;
+            return rows[0] as OrcamentoDBType || null;
         } catch (error) {
             console.log(error);
             return null
@@ -53,7 +53,7 @@ export const OrcamentoModel = {
 
     async update(id: string, updatedOrcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
-            const query = `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, update_at = ? WHERE id = ?`;
+            const query = `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, updated_at = ? WHERE id = ?`;
 
             const values = [
                 updatedOrcamento.total,
@@ -62,8 +62,8 @@ export const OrcamentoModel = {
                 new Date(),
                 id
             ];
-            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, values);
-            return rows as OrcamentoDBType
+            const [rows] = await db.execute<ResultSetHeader>(query, values);
+            return { id: rows.insertId, total: updatedOrcamento.total, id_utilizador: updatedOrcamento.id_utilizador, enabled: updatedOrcamento.enabled, created_at: updatedOrcamento.created_at, updated_at: updatedOrcamento.updated_at } as OrcamentoDBType
         } catch (error) {
             console.log(error);
             return null;
