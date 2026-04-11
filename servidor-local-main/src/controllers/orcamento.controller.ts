@@ -42,7 +42,7 @@ export const OrcamentoController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllOrcamentoResponse: OrcamentoDBType | null= await OrcamentoModel.getAll();
+        const getAllOrcamentoResponse: OrcamentoDBType[] | null= await OrcamentoModel.getAll();
 
         if (!getAllOrcamentoResponse) {
             const response: ResponseType<null> = {
@@ -53,7 +53,7 @@ export const OrcamentoController = {
             return res.status(500).json(response);
         }
 
-        const response: ResponseType<OrcamentoDBType> = {
+        const response: ResponseType<OrcamentoDBType[]> = {
             status: "success",
             message: "Orcamentos buscados com sucesso",
             data: getAllOrcamentoResponse
@@ -73,7 +73,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const getOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.get(id as string);
+        const getOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.get(Number(id));
 
         if (!getOrcamentoResponse) {
             const response: ResponseType<null> = {
@@ -114,7 +114,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const updateOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.update(id as string, updatedOrcamento);
+        const updateOrcamentoResponse: OrcamentoDBType | null = await OrcamentoModel.update(Number(id), updatedOrcamento);
 
         if (!updateOrcamentoResponse) {
             const response: ResponseType<null> = {
@@ -217,7 +217,7 @@ export const OrcamentoController = {
         subtotal = subtotal * (1 + urgencyTax)
     }
 
-    const updatedOrcamentoResponse = await OrcamentoModel.updateBudget(id as string, subtotal)
+    const updatedOrcamentoResponse = await OrcamentoModel.updateBudget(Number(id), subtotal)
 
     if(!updatedOrcamentoResponse){
         const response: ResponseType<null> = {
@@ -251,7 +251,7 @@ export const OrcamentoController = {
             return res.status(400).json(response);
         }
 
-        const deleteOrcamentoResponse = await OrcamentoModel.delete(id as string);
+        const deleteOrcamentoResponse = await OrcamentoModel.delete(Number(id));
 
         if (!deleteOrcamentoResponse) {
             const response: ResponseType<null> = {

@@ -16,15 +16,15 @@ export const OrcamentoModel = {
                 new Date(),
             ];
 
-            const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, values);
-            return rows as OrcamentoDBType //bug 
+            const [rows] = await db.execute(query, values);
+            return orcamento
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async getAll(): Promise<OrcamentoDBType[]> {
+    async getAll(): Promise<OrcamentoDBType[] | null> {
         try {
             const query = `SELECT * FROM tabela_orcamentos`;
             const [rows] = await db.execute<OrcamentoDBType[] & RowDataPacket[]>(query)
@@ -32,18 +32,18 @@ export const OrcamentoModel = {
             return rows as OrcamentoDBType[];
         } catch (error) {
             console.log(error);
-            return []
+            return null
         }
     },
 
-    async get(id: string): Promise<OrcamentoDBType | null> {
+    async get(id: number): Promise<OrcamentoDBType | null> {
         try {
             const query = `SELECT * FROM tabela_orcamentos WHERE id = ?`;
 
             const value = [id];
 
             const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, value)
-            return rows[0] as OrcamentoDBType || null;
+            return rows[0] as OrcamentoDBType;
         } catch (error) {
             console.log(error);
             return null
@@ -51,7 +51,7 @@ export const OrcamentoModel = {
         }
     },
 
-    async update(id: string, updatedOrcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
+    async update(id: number, updatedOrcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
             const query = `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, updated_at = ? WHERE id = ?`;
 
@@ -63,7 +63,16 @@ export const OrcamentoModel = {
                 id
             ];
             const [rows] = await db.execute<ResultSetHeader>(query, values);
-            return { id: rows.insertId, total: updatedOrcamento.total, id_utilizador: updatedOrcamento.id_utilizador, enabled: updatedOrcamento.enabled, created_at: updatedOrcamento.created_at, updated_at: updatedOrcamento.updated_at } as OrcamentoDBType
+
+            return { 
+                id: id, 
+                total: updatedOrcamento.total, 
+                id_utilizador: updatedOrcamento.id_utilizador, 
+                enabled: updatedOrcamento.enabled, 
+                created_at: updatedOrcamento.created_at, 
+                updated_at: updatedOrcamento.updated_at 
+            } as OrcamentoDBType
+
         } catch (error) {
             console.log(error);
             return null;
@@ -71,7 +80,7 @@ export const OrcamentoModel = {
     },
 
     //Exericio2
-    async updateBudget(id: string, total: number){
+    async updateBudget(id: number, total: number){
         try{
             const rows: any = await db.execute(
                 `UPDATE tabela_orcamentos SET total = ?, update_at = ? WHERE id = ?`, [total, new Date(), id]
@@ -85,14 +94,17 @@ export const OrcamentoModel = {
 
     
 
-    async delete(id: string) {
+    async delete(id: number) {
         try {
-            const query = `DELETE FROM tabela_orcamentos WHERE id = ?`
+            const querySelect = `SELECT * FROM tabela_orcamentos WHERE id = ?`
+            const [result] = await db.execute<OrcamentoDBType & RowDataPacket[]>(querySelect, [id])
 
-            const value = [id];
+            const orcamento: OrcamentoDBType = result[0] as OrcamentoDBType
 
-            const rows: any = await db.execute(query, value)
-            return rows[0]?.affectedRows === 0 ? null : rows;
+            const queryDelete = `DELETE FROM tabela_orcamentos WHERE id = ?`
+
+            const rows: any = await db.execute(queryDelete, [id])
+            return orcamento
         } catch (error) {
             console.log(error);
             return null
