@@ -17,7 +17,7 @@ export const OrcamentoModel = {
             ];
 
             const [rows] = await db.execute<OrcamentoDBType & RowDataPacket[]>(query, values);
-            return rows as OrcamentoDBType
+            return rows as OrcamentoDBType //bug 
         } catch (error) {
             console.log(error);
             return null;
@@ -26,7 +26,7 @@ export const OrcamentoModel = {
 
     async getAll(): Promise<OrcamentoDBType[]> {
         try {
-            const query = `SELECT * FROM tabela_orcamento`;
+            const query = `SELECT * FROM tabela_orcamentos`;
             const [rows] = await db.execute<OrcamentoDBType[] & RowDataPacket[]>(query)
 
             return rows as OrcamentoDBType[];
@@ -38,7 +38,7 @@ export const OrcamentoModel = {
 
     async get(id: string): Promise<OrcamentoDBType | null> {
         try {
-            const query = `SELECT * FROM tabela_orcamento WHERE id = ?`;
+            const query = `SELECT * FROM tabela_orcamentos WHERE id = ?`;
 
             const value = [id];
 
@@ -53,7 +53,7 @@ export const OrcamentoModel = {
 
     async update(id: string, updatedOrcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
-            const query = `UPDATE tabela_orcamento SET total = ?, id_utilizador = ?, enabled = ?, update_at = ? WHERE id = ?`;
+            const query = `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, update_at = ? WHERE id = ?`;
 
             const values = [
                 updatedOrcamento.total,
@@ -74,7 +74,7 @@ export const OrcamentoModel = {
     async updateBudget(id: string, total: number){
         try{
             const rows: any = await db.execute(
-                `UPDATE tabela_orcamento SET total = ?, update_at = ? WHERE id = ?`, [total, new Date(), id]
+                `UPDATE tabela_orcamentos SET total = ?, update_at = ? WHERE id = ?`, [total, new Date(), id]
             )
             return rows[0].affectedRows === 0 ? null : rows[0]
         }catch(err){
@@ -87,7 +87,7 @@ export const OrcamentoModel = {
 
     async delete(id: string) {
         try {
-            const query = `DELETE FROM tabela_orcamento WHERE id = ?`
+            const query = `DELETE FROM tabela_orcamentos WHERE id = ?`
 
             const value = [id];
 
