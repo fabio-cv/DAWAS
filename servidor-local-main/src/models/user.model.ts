@@ -10,7 +10,19 @@ export const UsersModel = {
         try {
             const [rows] = await db.execute <UserDBType & RowDataPacket[]>(
                 `INSERT INTO tabela_utilizadores 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            VALUES (
+                    id,
+                    nome,
+                    numero_identificacao,
+                    data_nascimento,
+                    email,
+                    telefone,
+                    pais,
+                    localidade,
+                    password,
+                    enabled,
+                    created_at,
+                    updated_at)`,
                 [
                     generateUUID(),
                     user.nome,
@@ -26,8 +38,8 @@ export const UsersModel = {
                     new Date(),
                 ],
             );
-            console.log({ rows });
-            return rows as UserDBType;
+            
+            return user;
         } catch (err) {
             console.log(err);
             return null;
