@@ -94,7 +94,7 @@ export const OrcamentoModel = {
 
     
 
-    async delete(id: number) {
+    async delete(id: number): Promise<OrcamentoDBType | null> {
         try {
             const querySelect = `SELECT * FROM tabela_orcamentos WHERE id = ?`
             const [result] = await db.execute<OrcamentoDBType & RowDataPacket[]>(querySelect, [id])
