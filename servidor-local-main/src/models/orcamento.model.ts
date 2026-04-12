@@ -16,7 +16,6 @@ export const OrcamentoModel = {
 
             const [rows] = await db.execute<ResultSetHeader>(
                 `INSERT INTO tabela_orcamentos (
-                    id, 
                     total, 
                     id_utilizador, 
                     enabled, 
@@ -25,7 +24,7 @@ export const OrcamentoModel = {
                     values
                     ); 
 
-            if(rows && rows.affectedRows !== 1) return null
+            if(rows.affectedRows === 0) return null
             return {...orcamento, id: rows.insertId}
 
         } catch (error) {
@@ -65,7 +64,6 @@ export const OrcamentoModel = {
 
     async update(id: number, updatedOrcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
         try {
-            const query = `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, updated_at = ? WHERE id = ?`;
 
             const values = [
                 updatedOrcamento.total,
@@ -74,7 +72,11 @@ export const OrcamentoModel = {
                 new Date(),
                 id
             ];
-            const [rows] = await db.execute<ResultSetHeader>(query, values);
+            const [rows] = await db.execute<ResultSetHeader>(
+                `UPDATE tabela_orcamentos SET total = ?, id_utilizador = ?, enabled = ?, updated_at = ? WHERE id = ?`
+                , values);
+
+            if(rows.affectedRows === 0) return null
 
             return { 
                 id: id, 
