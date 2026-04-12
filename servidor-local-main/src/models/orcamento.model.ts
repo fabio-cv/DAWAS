@@ -121,7 +121,7 @@ export const OrcamentoModel = {
 
             const [rows] = await db.execute<ResultSetHeader>(query, [id])
             if(rows.affectedRows === 0) return null
-            return rows
+            return rows.info
         } catch (error) {
             console.log(error);
             return null
