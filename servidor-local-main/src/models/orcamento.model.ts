@@ -114,14 +114,14 @@ export const OrcamentoModel = {
 
     
 
-    async delete(id: number): Promise<OrcamentoDBType | null> {
+    async delete(id: number){
         try {
             
             const query = `DELETE FROM tabela_orcamentos WHERE id = ?`
 
             const [rows] = await db.execute<ResultSetHeader>(query, [id])
             if(rows.affectedRows === 0) return null
-            return 
+            return rows
         } catch (error) {
             console.log(error);
             return null
