@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ResponseType, UserDBType } from "../utils/types.js";
+import type { ResponseType, UserType } from "../utils/types.js";
 import { UsersModel } from "../models/user.model.js";
 import { generateUUID } from "../utils/uuid.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 export const UserController = {
     async create(req: Request, res: Response) {
-        const user: UserDBType = req.body;
+        const user: UserType = req.body;
 
         try {
             if (!user) {
@@ -20,9 +20,9 @@ export const UserController = {
                 return res.status(400).json(response);
             }
 
-            const createUserResponse: UserDBType | null = await UsersModel.create(user);
+            const createUserResponse: UserType | null = await UsersModel.create(user);
 
-            const response: ResponseType<UserDBType> = {
+            const response: ResponseType<UserType> = {
                 status: "success",
                 message: "Utilizador criado com sucesso",
                 data: createUserResponse
@@ -55,7 +55,7 @@ export const UserController = {
 
     async get(req: Request, res: Response) {
         const { id } = req.params;
-        const getUserResponse: UserDBType | null = await UsersModel.get(id as string);
+        const getUserResponse: UserType | null = await UsersModel.get(id as string);
 
         if (!id) {
             const response: ResponseType<null> = {
@@ -77,7 +77,7 @@ export const UserController = {
 
         }
 
-        const response: ResponseType<UserDBType> = {
+        const response: ResponseType<UserType> = {
             status: "success",
             message: "Sucesso ao buscar usuário",
             data: getUserResponse
@@ -87,7 +87,7 @@ export const UserController = {
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedUser: UserDBType = req.body;
+        const updatedUser: UserType = req.body;
 
         if (!id) {
             return res.status(400).json(
@@ -165,7 +165,7 @@ export const UserController = {
             id: userData.id,
             email: userData.email,
             nome: userData.nome,
-            
+            role: userData.role
         }
 
         const token  = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: "1h"})
