@@ -1,22 +1,22 @@
-import { Router } from "express";
-import { PrestacaoServicoController } from "../controllers/prestacaoServico.controller.js";
+import { Router } from "express"
+import { PrestacaoServicoController } from "../controllers/prestacaoServico.controller.js"
 
-const PrestacaoServicoRouter = {
+const PrestacaoServicoRoute = {
     create: "/create",
-    getById: "/get-by-id/:id",
     getAll: "/",
+    getById: "/get-by-id/:id",
     update: "/update/:id",
     delete: "/delete/:id",
-    getAllPrestacaoServicoDetalhado: "/get-all-detalhado"
-};
+    getAllPrestacaoServicoDetalhada: "/get-all-detalhado"
+}
 
-const router = Router();
+const router = Router()
 
-router.get(PrestacaoServicoRouter.getAll, PrestacaoServicoController.getAll);
-router.get(PrestacaoServicoRouter.getById, PrestacaoServicoController.get);
-router.post(PrestacaoServicoRouter.create, PrestacaoServicoController.create);
-router.put(PrestacaoServicoRouter.update, PrestacaoServicoController.update);
-router.delete(PrestacaoServicoRouter.delete, PrestacaoServicoController.delete);
-router.get(PrestacaoServicoRouter.getAllPrestacaoServicoDetalhado, PrestacaoServicoController.getAllPrestacaoServicoDetalhado)
+router.post(PrestacaoServicoRoute.create, PrestacaoServicoController.create)
+router.get(PrestacaoServicoRoute.getAll, PrestacaoServicoController.getAll)
+router.get(PrestacaoServicoRoute.getById, PrestacaoServicoController.get)
+router.put(PrestacaoServicoRoute.update, PrestacaoServicoController.update)
+router.delete(PrestacaoServicoRoute.delete, PrestacaoServicoController.delete)
+router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, PrestacaoServicoController.getAllPrestacaoServicoDetalhada)
 
-export { router };
+export { router }

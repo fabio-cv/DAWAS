@@ -1,208 +1,204 @@
-# path/prestacaoServico.yaml
+# create: "/create",
+# getAll: "/",
+# getById: "/get-by-id/:id",
+# update: "/update/:id",
+# delete: "/delete/:id"
 
 paths:
-  /prestacao-servicos:
+  /prestacao-servico:
     get:
+      summary: Buscar todas as prestações de serviço
       tags:
-        - Prestações de Serviço
-      summary: Listar todas as prestações de serviço
-      description: Retorna uma lista de todas as prestações de serviço disponíveis
+        - Prestação de Serviço
+      description: Retorna uma lista de todas as prestações de serviço
       responses:
         "200":
-          description: Lista de prestações de serviço retornada com sucesso
+          description: Prestações de serviço encontradas com sucesso
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/prestacaoServicos"
-        "404":
-          description: Nenhuma prestação de serviço encontrada
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar prestações de serviço
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestacao-servicos/create:
+  /prestacao-servico/create:
     post:
-      tags:
-        - Prestações de Serviço
       summary: Criar uma nova prestação de serviço
-      description: Adiciona uma nova prestação de serviço ao sistema
+      tags:
+        - Prestação de Serviço
+      description: Cria uma nova prestação de serviço
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/CreatePrestacaoServico"
       responses:
-        "201":
+        "200":
           description: Prestação de serviço criada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucesso"
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Requisição inválida
+          description: Dados de prestação de serviço inválidos
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao criar prestação de serviço
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestacao-servicos/get-by-id/{id}:
+  /prestacao-servico/get-by-id/{id}:
     get:
+      summary: Buscar uma prestação de serviço por ID
       tags:
-        - Prestações de Serviço
-      summary: Obter prestação de serviço por ID
-      description: Retorna os detalhes de uma prestação de serviço específica pelo ID
+        - Prestação de Serviço
+      description: Retorna uma prestação de serviço por ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da prestação de serviço
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "1"
       responses:
         "200":
           description: Prestação de serviço encontrada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucesso"
-        "404":
-          description: Prestação de serviço não encontrada
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Requisição inválida
+          description: Dados de prestação de serviço inválidos
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar prestação de serviço
+          content:
+            application/json:
+              schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestacao-servicos/update/{id}:
+  /prestacao-servico/update/{id}:
     put:
+      summary: Atualizar uma prestação de serviço
+      security:
+        - bearerAuth: []
       tags:
-        - Prestações de Serviço
-      summary: Atualizar uma prestação de serviço existente
-      description: Atualiza os detalhes de uma prestação de serviço específica pelo ID
+        - Prestação de Serviço
+      description: Atualiza uma prestação de serviço
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da prestação de serviço a ser atualizada
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "1"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: "#/components/schemas/CreatePrestacaoServico"
+              $ref: "#/components/schemas/UpdatePrestacaoServico"
       responses:
         "200":
           description: Prestação de serviço atualizada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucesso"
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Dados inválidos
+          description: Dados de prestação de serviço inválidos
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "404":
-          description: Prestação de serviço não encontrada
+        "500":
+          description: Erro ao atualizar prestação de serviço
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestacao-servicos/delete/{id}:
+  /prestacao-servico/delete/{id}:
     delete:
+      summary: Deletar uma prestação de serviço
       tags:
-        - Prestações de Serviço
-      summary: Apagar uma prestação de serviço
-      description: Apaga uma prestação de serviço específica pelo ID
+        - Prestação de Serviço
+      description: Deleta uma prestação de serviço
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da prestação de serviço a ser apagada
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "1"
       responses:
         "200":
-          description: Prestação de serviço apagada com sucesso
+          description: Prestação de serviço deletada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucesso"
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Dados inválidos
+          description: Dados de prestação de serviço inválidos
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "404":
-          description: Prestação de serviço não encontrada
+        "500":
+          description: Erro ao deletar prestação de serviço
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
-  
-  /prestacao-servicos/get-all-detalhada:
+
+  /prestacao-servico/get-all-detalhado:
     get:
-    summary: Buscar todas as prestações de serviço detalhadas
-    tags: 
-      - Prestação se Serviço
-    description: Retorna uma lista de todas as prestações de serviço detahadas
-    parameters: 
-      - name: limit
-        in: query
-        required: false
-        schema: 
-          type: string
-          example: "10"
-
-      - name: offset
-        in: query
-        required: false
-        schema: 
-          type: string
-          example: "0"
-    responses:
-      "200":
-        description: Prestação de serviço detalhada encontrada com sucesso
-        content: 
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResponseSucess"
-      "500":
-        description: Erro ao buscar prestação de serviço detalhada
-        content:  
-          application/json:
-            schema: 
-              $ref: "#/components/schemas/ResponseError"
-
-
+      summary: Buscar todas as prestações de serviço detalhadas
+      tags:
+        - Prestação de Serviço
+      description: Retorna uma lista de todas as prestações de serviço detalhadas
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "10"
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "0"
+      responses:
+        "200":
+          description: Prestação de serviço detalhada encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "500":
+          description: Erro ao buscar prestação de serviço detalhada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
