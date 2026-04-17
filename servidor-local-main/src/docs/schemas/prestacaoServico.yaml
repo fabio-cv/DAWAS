@@ -1,96 +1,141 @@
-# schema/prestacaoServico.yaml
+# id: string,
+# designacao: string,
+# subtotal: number,
+# horas_estimadas: number,
+# id_prestador: string,
+# id_servico: string,
+# preco_hora: number,
+# estado: string,
+# id_orcamento: string,
+# enabled: boolean,
+# created_at: string,
+# updated_at: string
 
 components:
   schemas:
-    # schema principal da prestação de serviço
-    prestacaoServicos:
+    PrestacaoServico:
       type: object
       properties:
         id:
-          type: number
-          example: 1
-
+          type: string
+          example: "1"
         designacao:
           type: string
-          example: "Limpeza de escritório"
-
+          example: "Prestacao de servico"
         subtotal:
           type: number
-          example: 200.00
-
+          example: 100
         horas_estimadas:
           type: number
-          example: 4
-
-        id_orcamento:
-          type: number
-          example: 1
-
+          example: 10
+        id_prestador:
+          type: string
+          example: "1"
         id_servico:
-          type: number
-          example: 1
-
+          type: string
+          example: "1"
         preco_hora:
           type: number
-          example: 50.00
-
+          example: 100
         estado:
           type: string
           example: "pendente"
-
-        finalizado:
+        id_orcamento:
           type: string
-          example: "2023-06-01T00:00:00Z"
-
-        id_prestador:
-          type: string
-          example: "abc123xyz"
-
+          example: "1"
         enabled:
           type: boolean
           example: true
-
         created_at:
           type: string
-          example: "2023-01-01T00:00:00Z"
-
-        update_at:
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
           type: string
-          example: "2023-01-01T00:00:00Z"
+          example: "2022-01-01T00:00:00.000Z"
 
-
-    # schema para criar uma nova prestação de serviço
     CreatePrestacaoServico:
       type: object
       properties:
         designacao:
           type: string
-          example: "Limpeza de escritório"
-
+          example: "Prestacao de servico"
         subtotal:
           type: number
-          example: 200.00
-
+          example: 100
         horas_estimadas:
           type: number
-          example: 4
-
-        id_orcamento:
-          type: number
-          example: 1
-
-        id_servico:
-          type: number
-          example: 1
-
-        preco_hora:
-          type: number
-          example: 50.00
-
+          example: 10
         id_prestador:
           type: string
-          example: "abc123xyz"
+          example: "1"
+        id_servico:
+          type: string
+          example: "1"
+        preco_hora:
+          type: number
+          example: 100
+        estado:
+          type: string
+          example: "pendente"
+        id_orcamento:
+          type: string
+          example: "1"
+        enabled:
+          type: boolean
+          example: true
 
+    PrestacaoServicoByCategoria:
+      type: object
+      properties:
+        id_prestacao_servico:
+          type: string
+          example: "1"
+        descricao:
+          type: string
+          example: "Prestacao de servico"
+        nome_servico:
+          type: string
+          example: "Servico"
+        nome_categoria:
+          type: string
+          example: "Categoria"
+        icone_categoria:
+          type: string
+          example: "icone"
+        data_pedido:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+        urgente:
+          type: boolean
+          example: true
+
+    UpdatePrestacaoServico:
+      type: object
+      properties:
+        designacao:
+          type: string
+          example: "Prestacao de servico"
+        subtotal:
+          type: number
+          example: 100
+        horas_estimadas:
+          type: number
+          example: 10
+        id_prestador:
+          type: string
+          example: "1"
+        id_servico:
+          type: string
+          example: "1"
+        preco_hora:
+          type: number
+          example: 100
+        estado:
+          type: string
+          example: "pendente"
+        id_orcamento:
+          type: string
+          example: "1"
         enabled:
           type: boolean
           example: true
