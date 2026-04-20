@@ -1,4 +1,3 @@
-import { ro } from "date-fns/locale"
 import db from "../lib/db.js"
 import type { EmpresaDBType } from "../utils/types.js"
 import type { RowDataPacket } from "mysql2"
