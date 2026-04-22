@@ -2,13 +2,13 @@ import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import { formatDateToDDMMYYYY } from "../utils/date.js";
 import { hashPassword } from "../utils/password.js";
-import type { UserDBType } from "../utils/types.js";
+import type { UserType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const UsersModel = {
-    async create(user: UserDBType): Promise<UserDBType | null> {
+    async create(user: UserType): Promise<UserType | null> {
         try {
-            const [rows] = await db.execute <UserDBType & RowDataPacket[]>(
+            const [rows] = await db.execute <UserType & RowDataPacket[]>(
                 `INSERT INTO tabela_utilizadores 
             VALUES (
                     id,
@@ -52,11 +52,11 @@ export const UsersModel = {
         return rows;
     },
 
-    async get(id: string): Promise<UserDBType | null> {
+    async get(id: string): Promise<UserType | null> {
         console.log("getUserById", id);
 
         try {
-            const [rows] = await db.execute<UserDBType & RowDataPacket[]>(
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `SELECT * FROM tabela_utilizadores 
         WHERE tabela_utilizadores.id = ?`,
 
@@ -64,35 +64,35 @@ export const UsersModel = {
             );
 
             if (Array.isArray(rows) && rows.length === 0) return null;
-            return rows as UserDBType
+            return rows as UserType
         } catch (err) {
             console.log(err);
             return null;
         }
     },
     //Ex-1
-    async getById(id: string): Promise<UserDBType | null>{
+    async getById(id: string): Promise<UserType | null>{
         try {
             const [rows] = await db.execute(
                 `SELECT * FROM tabela_utilizadores
                 WHERE tabela_utilizadores.id = ?`, [id]
             )
             if(Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as UserDBType : null
+            return Array.isArray(rows) ? rows[0] as UserType : null
         } catch (error) {
             console.log(error)
             return null
         }
     },
 
-    async getByEmail(email: string): Promise<UserDBType | null>{
+    async getByEmail(email: string): Promise<UserType | null>{
         try {
             const [rows] = await db.execute(
                 `SELECT * FROM tabela_utilizadores
                 WHERE tabela_utilizadores.email = ?`, [email]
             )
             if(Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as UserDBType : null
+            return Array.isArray(rows) ? rows[0] as UserType : null
         } catch (error) {
             console.log(error)
             return null
@@ -100,7 +100,7 @@ export const UsersModel = {
     },
 
 
-    async update(id: string, updatedUser: UserDBType) {
+    async update(id: string, updatedUser: UserType) {
         try {
             const query = `
         UPDATE tabela_utilizadores
