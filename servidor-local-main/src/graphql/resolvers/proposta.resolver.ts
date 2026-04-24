@@ -18,8 +18,7 @@ export const propostaResolver = {
             return await PropostaModel.update(args.id, args.proposta);
         },
         deleteProposta: async (_: any, args: { id: string }) => {
-            return await PropostaModel.delete(args.id)
+            return await PropostaModel.delete(args.id);
         }
-
     }
 }
