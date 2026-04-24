@@ -1,20 +1,20 @@
 {
   "name": "servidor-local",
   "version": "1.0.0",
-  "main": "index.ts",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "docs": "swagger-jsdoc -o ./src/docs/swagger.json ./src/docs/swagger.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Fábio Barros",
-  "type": "module",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@apollo/server": "^5.5.0",
     "@as-integrations/express5": "^1.1.2",
+    "@types/swagger-jsdoc": "^6.0.4",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
@@ -23,7 +23,6 @@
     "express": "^5.2.1",
     "graphql": "^16.13.2",
     "graphql-tag": "^2.12.6",
-    "jest": "^30.3.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.19.1",
     "swagger-jsdoc": "^6.2.8",
@@ -35,10 +34,8 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.0",
-    "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "cross-env": "^10.1.0",
-    "ts-jest": "^29.4.9",
+    "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

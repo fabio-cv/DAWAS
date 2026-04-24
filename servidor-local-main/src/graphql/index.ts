@@ -5,7 +5,6 @@ import { prestacaoServicoResolver } from "./resolvers/prestacaoServico.resolver.
 import { prestadorResolver } from "./resolvers/prestador.resolver.js";
 import { propostaResolver } from "./resolvers/proposta.resolver.js";
 import { servicoResolver } from "./resolvers/servico.resolver.js";
-import { empresaResolver } from "./resolvers/empresa.resolver.js";
 
 export const resolvers = {
     Query: {
@@ -14,8 +13,7 @@ export const resolvers = {
         ...prestacaoServicoResolver.Query,
         ...prestadorResolver.Query,
         ...propostaResolver.Query,
-        ...servicoResolver.Query,
-        ...empresaResolver.Query
+        ...servicoResolver.Query
     },
     Mutation: {
         ...userResolver.Mutation,
@@ -23,10 +21,8 @@ export const resolvers = {
         ...prestacaoServicoResolver.Mutation,
         ...prestadorResolver.Mutation,
         ...propostaResolver.Mutation,
-        ...servicoResolver.Mutation,
-        ...empresaResolver.Mutation
+        ...servicoResolver.Mutation
     }
-
 }
 
-export {typeDefs}
+export { typeDefs }
