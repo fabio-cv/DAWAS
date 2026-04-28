@@ -6,7 +6,7 @@ export const BadgeCheckIcon = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#2eb1cc"
+      stroke="#13A4EC"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
