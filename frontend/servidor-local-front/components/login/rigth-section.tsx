@@ -49,6 +49,8 @@ export const RightSection = () => {
         })
     }
 
+    
+
     return(
         <div className="w-1/2 flex flex-col justify-center">
             <Card className="h-full flex flex-col justify-center px-14 gap-16">
