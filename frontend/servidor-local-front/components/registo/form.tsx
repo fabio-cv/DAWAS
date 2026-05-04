@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useState } from "react";
+import LoginPage from "@/app/(unauth)/login/page";
 
 export const RegistoForm = () => {
     const [nome, setNome] = useState("")
@@ -87,7 +88,7 @@ export const RegistoForm = () => {
             <div className="w-1/2 flex flex-col justify-center">
             <Card className="h-full flex flex-col justify-center px-14 gap-16">
                 <CardHeader className="text-5xl font-bold">
-                    <span>Login</span>
+                    <span>Register</span>
                 </CardHeader>
 
                 <CardContent>
