@@ -11,15 +11,22 @@ import { router as prestacaoRouter }  from "./routes/prestacaoServico.route.js"
 import { swaggerSpec }                from "./docs/swagger.js"
 import swaggerUi                      from "swagger-ui-express"
 import { typeDefs, resolvers }        from "./graphql/index.js"
+import cors from "cors"
 
 const app = express()
 app.use(express.json())
+app.use(cors(
+    {
+        origin: "http://localhost:3000",
+        credentials: true
+    }
+))
 
 // API routes
 app.use("/service",   serviceRouter)
 app.use("/orcamento", orcamentoRouter)
 app.use("/prestador", prestadorRouter)
-app.use("/user",      userRouter)
+app.use("/users",      userRouter)
 app.use("/proposta",  propostaRouter)
 app.use("/prestacao", prestacaoRouter)
 
@@ -31,6 +38,8 @@ const server = new ApolloServer({
     typeDefs,
     resolvers
 })
+
+
 
 async function startServer() {
     try {
