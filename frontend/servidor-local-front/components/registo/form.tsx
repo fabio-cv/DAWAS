@@ -191,7 +191,7 @@ export const RegistoForm = () => {
                     </div>
 
                     <div>
-                        <span>Do you already have an account?</span>
+                        <span>Do you already have an account? </span>
                         <Link href="/login" className="text-[#13A4EC] font-semibold">Login</Link>
 
                     </div>
