@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const RightSection = () => {
 
@@ -32,7 +33,7 @@ export const RightSection = () => {
 
     const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        await fetch(
+        const response = await fetch(
             "http://localhost:8080/users/login",
             {
                 method: "POST",
@@ -44,9 +45,21 @@ export const RightSection = () => {
                     password: password
                 })
             }
-        ).then((response) => {
-            console.log(response.json());
-        })
+        )
+
+        if(response.status === 200){
+                toast.success("Utilizador loggado com sucesso")
+
+                const responseData = await response.json()
+                console.log({"dados recebidos": responseData});
+                
+
+                if(typeof window !== "undefined"){
+                    //window.location.href = "/home"
+                }
+            }else{
+                toast.error("Não foi possível fazer login, tente novamente.")
+            }
     }
 
     

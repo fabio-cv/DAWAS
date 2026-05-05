@@ -6,7 +6,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useState } from "react";
-import LoginPage from "@/app/(unauth)/login/page";
+import { toast } from "sonner";
+
 
 export const RegistoForm = () => {
     const [nome, setNome] = useState("")
@@ -60,7 +61,7 @@ export const RegistoForm = () => {
 
         const handleRegisto = async() => {
 
-            await fetch("http://localhost:8080/users/create",
+            const response = await fetch("http://localhost:8080/users/create",
                 {
                     method: "POST",
                     headers: {
@@ -68,19 +69,27 @@ export const RegistoForm = () => {
                     },
                     body: JSON.stringify({
                         nome: nome,
-                        email: email,
                         numero_identificacao: numeroIdentificacao,
                         data_nascimento: dataNascimento,
+                        email: email,
                         telefone: telefone,
                         pais: pais,
                         localidade: localidade,
-                        password: password
+                        password: password,
+                        role: "cliente",
+                        enable: true
                     })
                 }
-            ).then((response) => {
-                console.log(response.json());
-                
-            })
+            )
+
+            if(response.status === 200){
+                toast.success("Utilizador criado com sucesso")
+                if(typeof window !== "undefined"){
+                    window.location.href = "/login"
+                }
+            }else{
+                toast.error("Não foi possível criar conta, tente novamente.")
+            }
 
         }
 
