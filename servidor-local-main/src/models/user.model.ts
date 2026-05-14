@@ -7,13 +7,14 @@ import { generateUUID } from "../utils/uuid.js";
 
 export const UsersModel = {
     async create(user: UserType): Promise<UserType | null> {
+        console.log({user});
+        
         try {
             const [rows] = await db.execute <UserType & RowDataPacket[]>(
-                `INSERT INTO tabela_utilizadores 
-            VALUES (
+                `INSERT INTO tabela_utilizadores (
                     id,
                     nome,
-                    numero_identificacao,
+                    numero,
                     data_nascimento,
                     email,
                     telefone,
@@ -23,7 +24,8 @@ export const UsersModel = {
                     role,
                     enabled,
                     created_at,
-                    updated_at)`,
+                    update_at)
+                VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                 [
                     generateUUID(),
                     user.nome,
@@ -135,6 +137,9 @@ export const UsersModel = {
             ]
 
             const rows = await db.execute(query, values)
+
+           
+            
             return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
         } catch (err) {
             console.log(err)

@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { setCookie } from "nookies";
 
 export const RightSection = () => {
 
@@ -53,9 +54,19 @@ export const RightSection = () => {
                 const responseData = await response.json()
                 console.log({"dados recebidos": responseData});
                 
+                //se salvar dados na cookies
+                setCookie(null, "token", responseData.data.token, {
+                    maxAge: 30 * 24 * 60 * 60, 
+                    path: "/"
+                })
+
+                setCookie(null, "user", JSON.stringify(responseData.data), {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: "/"
+                })
 
                 if(typeof window !== "undefined"){
-                    //window.location.href = "/home"
+                    window.location.href = "/home"
                 }
             }else{
                 toast.error("Não foi possível fazer login, tente novamente.")

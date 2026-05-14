@@ -61,6 +61,7 @@ export const RegistoForm = () => {
 
         const handleRegisto = async() => {
 
+
             const response = await fetch("http://localhost:8080/users/create",
                 {
                     method: "POST",
@@ -77,12 +78,12 @@ export const RegistoForm = () => {
                         localidade: localidade,
                         password: password,
                         role: "cliente",
-                        enable: true
+                        enabled: true
                     })
                 }
             )
 
-            if(response.status === 200){
+            if(response.status === 201){
                 toast.success("Utilizador criado com sucesso")
                 if(typeof window !== "undefined"){
                     window.location.href = "/login"
@@ -139,7 +140,7 @@ export const RegistoForm = () => {
                         <div className="flex flex-col gap-2">
                             <Label>Data de nascimento</Label>
                             <Input 
-                                type="date" 
+                                type="text" 
                                 placeholder="Data de nascimento" 
                                 className="py-2 h-10 text-lg" 
                                 value={dataNascimento}
