@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    container_name: servidor-local
+    ports:
+      - "8080:8080"
+    networks:
+      - marketplace-net
+      
+    environment:
+      - PORT=8080
+      - NODE_ENV=development
+
+  web:
+    build: .
+    container_name: servidor-local-front
+    ports:
+      - "3000:3000"
+    networks:
+      - marketplace-net
+      
+    environment:
+      - PORT=3000
+      - NEXT_PUBLIC_API_URL=http://localhost:8080/graphql
+      - NEXT_PUBLIC_API_URL_UPLOAD=http://localhost:8080/upload
+      
+
+      
