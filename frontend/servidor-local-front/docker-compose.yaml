@@ -18,11 +18,18 @@ services:
       - "3000:3000"
     networks:
       - marketplace-net
+
+    depends_on:
+      - api
       
     environment:
       - PORT=3000
       - NEXT_PUBLIC_API_URL=http://localhost:8080/graphql
-      - NEXT_PUBLIC_API_URL_UPLOAD=http://localhost:8080/upload
+      - NEXT_PUBLIC_API_URL_UPLOAD=http://localhost:8080/
       
+networks:
+  marketplace-net:
+    driver: bridge
+
 
       
