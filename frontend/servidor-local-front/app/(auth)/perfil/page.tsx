@@ -1,7 +1,7 @@
-export default function Perfil() {
-    return(
-        <div>
-
-        </div>
-    )
+export default function PerfilPage() {
+  return (
+    <div>
+      <h1>Perfil</h1>
+    </div>
+  );
 }
